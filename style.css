@@ -17,16 +17,26 @@ body {
 .player__wrapper {
   display: inline-flex;
   position: relative;
+  overflow: hidden;
 }
 
 .action__panel {
   bottom: 0;
   position: absolute;
-  height: 41px;
   width: 100%;
   display: flex;
   align-items: center;
   padding: 0 17px;
+  overflow: hidden;
+  transition-duration: .3s;
+}
+
+.action__panel[data-status="open"] {
+  height: 41px;
+}
+
+.action__panel[data-status="close"] {
+  height: 0;
 }
 
 .panel__gradient {

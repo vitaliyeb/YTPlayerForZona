@@ -14,6 +14,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 time_duration: document.getElementById('time-duration'),
                 toggle_screen_button: document.getElementById('panel-screen')
             };
+            this.stateIterator = 'default';
+            this.control = {
+                up: () => this.controlIterator('up'),
+                right: () => this.controlIterator('right'),
+                down: () => this.controlIterator('down'),
+                left: () => this.controlIterator('left'),
+                back: () => this.controlIterator('back'),
+                ok: () => this.controlIterator('ok')
+            }
 
             const tag = document.createElement('script');
             tag.src = 'https://www.youtube.com/iframe_api';
@@ -25,7 +34,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     width: window.innerWidth,
                     videoId,
                     playerVars: {
-                        controls: 1,
+                        controls: 0,
                     },
                     events: {
                         onReady: () => {
@@ -46,15 +55,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 });
             };
             this.initEvents();
-
-            window.addEventListener('click', () => {
-                // let iframe = document.getElementById('player');
-                // console.log(iframe)
-                // var requestFullScreen = iframe.requestFullScreen || iframe.mozRequestFullScreen || iframe.webkitRequestFullScreen;
-                // if (requestFullScreen) {
-                //     requestFullScreen.bind(iframe)();
-                // }
-            })
         }
 
         //init
@@ -78,8 +78,55 @@ window.addEventListener('DOMContentLoaded', () => {
             return `${hour ? (hour % 24 + ':') : ""}${('0' + min % 60).slice(-2)}:${('0' + sec % 60).slice(-2)}`
         }
 
+        setState(nextState) {
+
+        }
+
+        controlIterator = (key) => {
+            const {ui, stateIterator} = this;
+            console.log(key)
+            switch (stateIterator) {
+                case 'default':
+                    switch (key) {
+                        case 'up':
+                            this.closePanel();
+                            this.setState('open-panel');
+                            break;
+                        case 'down':
+                            this.openPanel();
+                            this.setState('open-panel');
+                        break;
+                    }
+                    break;
+                case 'down':
+                    console.log('down');
+                    break;
+            }
+
+        }
 
         //controls
+
+        closePanel() {
+            const {ui: { action_panel }} = this;
+            action_panel.setAttribute('data-status', 'close')
+        }
+
+        openPanel() {
+            const {ui: { action_panel }} = this;
+            action_panel.setAttribute('data-status', 'open')
+        }
+
+        togglePanel() {
+            const {ui: { action_panel }} = this;
+            const panelStatus = action_panel.getAttribute('data-status');
+            if (panelStatus === 'open') {
+                this.closePanel();
+            } else {
+                this.openPanel();
+            }
+        }
+
         exitFullscreen() {
             document.exitFullscreen();
         }
@@ -172,5 +219,19 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    window.p = new Player('1fueZCTYkpA')
+    window.p = new Player('1fueZCTYkpA');
+
+
+    window.addEventListener('keydown', (e) => {
+        const f =({
+            "ArrowUp": p.control.up,
+            "ArrowRight": p.control.right,
+            "ArrowDown": p.control.down,
+            "ArrowLeft": p.control.left,
+            "Enter": p.control.ok,
+            "Backspace": p.control.back,
+        })[e.key];
+
+        if (typeof f === 'function') f();
+    })
 });
