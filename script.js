@@ -12,7 +12,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 volume_ball: document.getElementById('volume-ball'),
                 time_current: document.getElementById('time-current'),
                 time_duration: document.getElementById('time-duration'),
-                toggle_screen_button: document.getElementById('panel-screen')
+                toggle_screen_button: document.getElementById('panel-screen'),
+                progress_wrapper: document.getElementById('progress-wrapper'),
+                progress_ball: document.getElementById('progress-ball')
             };
             this.stateIterator = 'default';
             this.control = {
@@ -40,14 +42,21 @@ window.addEventListener('DOMContentLoaded', () => {
                         onReady: () => {
                             this.setDuration();
                             this.loopId = setInterval(() => {
-                                this.updateCurrentTime();
+                                if (!this.ui.progress_ball.hasAttribute('data-status')) {
+                                    this.updateCurrentTime();
+                                    this.setProgressBallFromTime(this.player.getCurrentTime());
+                                }
                                 this.setVolume(this.player.getVolume());
                             }, 100)
                         },
                         onStateChange: (playerState) => {
                             switch (playerState.data) {
                                 case YT.PlayerState.PLAYING:
-
+                                    this.ui.play_button.setAttribute('data-status', 'play');
+                                    this.setProgressBallFromTime(this.player.getCurrentTime());
+                                    break;
+                                case YT.PlayerState.PAUSED:
+                                    this.ui.play_button.setAttribute('data-status', 'pause');
                                     break;
                             }
                         }
@@ -59,12 +68,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
         //init
         initEvents() {
-            const {ui: {volume_wrapper, volume_ball, play_button, toggle_screen_button}} = this;
+            const {ui: {volume_wrapper, volume_ball, play_button, toggle_screen_button, progress_ball}} = this;
             play_button.addEventListener('click', this.togglePlayStatus)
             volume_wrapper.addEventListener('mouseenter', this.openVolumeRange);
             volume_wrapper.addEventListener('mouseleave', this.closeVolumeRange)
             volume_ball.addEventListener('mousedown', this.downVolumeBall);
             toggle_screen_button.addEventListener('click', this.toggleFullscreen);
+            progress_ball.addEventListener('mousedown', this.downProgressBall)
             window.addEventListener('resize', (event) => {
                 const {ui: {wrapper}, player} = this;
                 player.setSize(window.innerWidth, window.innerHeight)
@@ -79,7 +89,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         setState(nextState) {
-
+            console.log()
         }
 
         controlIterator = (key) => {
@@ -95,7 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         case 'down':
                             this.openPanel();
                             this.setState('open-panel');
-                        break;
+                            break;
                     }
                     break;
                 case 'down':
@@ -108,17 +118,17 @@ window.addEventListener('DOMContentLoaded', () => {
         //controls
 
         closePanel() {
-            const {ui: { action_panel }} = this;
+            const {ui: {action_panel}} = this;
             action_panel.setAttribute('data-status', 'close')
         }
 
         openPanel() {
-            const {ui: { action_panel }} = this;
+            const {ui: {action_panel}} = this;
             action_panel.setAttribute('data-status', 'open')
         }
 
         togglePanel() {
-            const {ui: { action_panel }} = this;
+            const {ui: {action_panel}} = this;
             const panelStatus = action_panel.getAttribute('data-status');
             if (panelStatus === 'open') {
                 this.closePanel();
@@ -149,6 +159,11 @@ window.addEventListener('DOMContentLoaded', () => {
             time_current.textContent = this.convertSecond(Math.trunc(this.player.getCurrentTime()));
         }
 
+        setCurrentTime(sec) {
+            const {ui: {time_current}} = this;
+            time_current.textContent = this.convertSecond(Math.trunc(sec));
+        }
+
         setDuration() {
             const {ui: {time_duration}} = this;
             time_duration.textContent = this.convertSecond(Math.trunc(this.player.getDuration()));
@@ -162,6 +177,41 @@ window.addEventListener('DOMContentLoaded', () => {
         closeVolumeRange = () => {
             const {ui: {volume_wrapper}} = this;
             volume_wrapper.setAttribute('data-status', 'close')
+        }
+
+        getSecFromXPos(x) {
+            const {player, ui: {progress_wrapper}} = this;
+            return (player.getDuration() / 100) * (x / (progress_wrapper.offsetWidth / 100));
+        }
+
+        setProgressBallFromTime(time) {
+            const {ui: {progress_ball, progress_wrapper}, player} = this;
+            const position = (progress_wrapper.offsetWidth / 100) * (time / (player.getDuration() / 100));
+            progress_ball.style.left = `${position}px`
+        }
+
+        downProgressBall = (e) => {
+            const {ui: {progress_wrapper, progress_ball}, player} = this;
+            const rect = progress_wrapper.getBoundingClientRect();
+            player.i.style.pointerEvents = 'none';
+            progress_ball.setAttribute('data-status', 'move');
+            let time = player.getCurrentTime();
+
+            const handleMove = (e) => {
+                const position = Math.min(Math.max(0, e.clientX - rect.x), rect.width);
+                time = this.getSecFromXPos(position);
+                this.setCurrentTime(time);
+                progress_ball.style.left = `${position}px`
+            }
+
+
+            window.addEventListener('mousemove', handleMove);
+            window.addEventListener('mouseup', () => {
+                window.removeEventListener('mousemove', handleMove);
+                progress_ball.removeAttribute('data-status');
+                player.seekTo(time, true);
+                player.i.style.pointerEvents = 'auto';
+            }, {once: true});
         }
 
         downVolumeBall = (e) => {
@@ -207,7 +257,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         togglePlayStatus = () => {
-            console.log('click')
             const status = this.ui.play_button.getAttribute('data-status')
 
             if (status === 'pause') {
@@ -233,5 +282,6 @@ window.addEventListener('DOMContentLoaded', () => {
         })[e.key];
 
         if (typeof f === 'function') f();
+        e.preventDefault();
     })
 });

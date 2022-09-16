@@ -11,6 +11,9 @@
 
 body {
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 
@@ -27,16 +30,17 @@ body {
   display: flex;
   align-items: center;
   padding: 0 17px;
-  overflow: hidden;
   transition-duration: .3s;
+  height: 41px;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .action__panel[data-status="open"] {
-  height: 41px;
+  bottom: 0;
 }
 
 .action__panel[data-status="close"] {
-  height: 0;
+  bottom: -50px;
 }
 
 .panel__gradient {
@@ -52,6 +56,27 @@ body {
 
 .action__panel > div:not(.panel__gradient) {
   z-index: 2;
+}
+
+.panel__progress {
+  height: 3px;
+  left: 12px;
+  width: calc(100vw - 24px);
+  background-color: rgba(255, 255, 255, 0.45);
+  position: absolute;
+  top: 0;
+}
+
+.progress__ball {
+  width: 20px;
+  height: 20px;
+  background-color: #f00;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(.6);
+  top: 50%;
+  left: 0;
+  position: absolute;
+  cursor: pointer;
 }
 
 .panel__player-status {
