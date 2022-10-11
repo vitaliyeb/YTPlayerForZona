@@ -6,17 +6,18 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./src/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<div id="loader__wrapper"><span class="loader"></span></div>
 <div class="player__wrapper" id="wrapper" data-status="open">
     <div id="player"></div>
-    <div class="action__panel" data-status="open" id="action-panel">
-<!--        <div class="panel__gradient"></div>-->
-        <div class="panel__progress" id="progress-wrapper">
+    <div class="action__panel" data-status="close" id="action-panel">
+        <!--        <div class="panel__gradient"></div>-->
+        <div class="panel__progress" data-selected id="progress-wrapper">
             <div class="progress__ball" id="progress-ball"></div>
         </div>
         <div class="panel__player-status" id="panel-play" data-status="pause">
@@ -28,7 +29,7 @@
                       id="ytp-id-161"></path>
             </svg>
         </div>
-        <div class="panel__volume" id="volume-wrapper" data-status="close">
+        <div class="panel__volume" id="volume-wrapper" data-status="open">
             <svg height="36" version="1.1" viewBox="0 0 36 36" width="36">
                 <path class="ytp-svg-fill ytp-svg-volume-animation-speaker"
                       clip-path="url(#ytp-svg-volume-animation-mask)"
@@ -44,7 +45,38 @@
             <span class="time__separation">/</span>
             <span class="time__duration" id="time-duration">00:00</span>
         </div>
-        <div class="panel__toggle-screen" id="panel-screen">
+
+        <div class="panel__setting" id="setting-wrapper">
+            <div class="dropout setting__dropout" id="setting-dropout" >
+                <div data-value="quality" class="dropout__item">
+                    <svg height="24" viewBox="0 0 24 24" width="24"><path d="M15,17h6v1h-6V17z M11,17H3v1h8v2h1v-2v-1v-2h-1V17z M14,8h1V6V5V3h-1v2H3v1h11V8z            M18,5v1h3V5H18z M6,14h1v-2v-1V9H6v2H3v1 h3V14z M10,12h11v-1H10V12z" fill="white"></path></svg>
+                    <p>Качество</p>
+                    <div class="dropout__value">
+                        <p>Автонастройка</p>
+                        <div class="dropout__arrow"></div>
+                    </div>
+                </div>
+                <div data-value="test" class="dropout__item">
+                    <svg height="24" viewBox="0 0 24 24" width="24"><path d="M15,17h6v1h-6V17z M11,17H3v1h8v2h1v-2v-1v-2h-1V17z M14,8h1V6V5V3h-1v2H3v1h11V8z            M18,5v1h3V5H18z M6,14h1v-2v-1V9H6v2H3v1 h3V14z M10,12h11v-1H10V12z" fill="white"></path></svg>
+                    <p>Качество</p>
+                    <div class="dropout__value">
+                        <p>Автонастройка</p>
+                        <div class="dropout__arrow"></div>
+                    </div>
+                </div>
+                <div data-value="test" class="dropout__item">
+                    <svg height="24" viewBox="0 0 24 24" width="24"><path d="M15,17h6v1h-6V17z M11,17H3v1h8v2h1v-2v-1v-2h-1V17z M14,8h1V6V5V3h-1v2H3v1h11V8z            M18,5v1h3V5H18z M6,14h1v-2v-1V9H6v2H3v1 h3V14z M10,12h11v-1H10V12z" fill="white"></path></svg>
+                    <p>Качество</p>
+                    <div class="dropout__value">
+                        <p>Автонастройка</p>
+                        <div class="dropout__arrow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="dropout quality__dropout" id="quality-dropout" ></div>
+            <svg height="36px" viewBox="0 0 36 36" width="36px"><use class="ytp-svg-shadow" xlink:href="#ytp-id-18"></use><path d="m 23.94,18.78 c .03,-0.25 .05,-0.51 .05,-0.78 0,-0.27 -0.02,-0.52 -0.05,-0.78 l 1.68,-1.32 c .15,-0.12 .19,-0.33 .09,-0.51 l -1.6,-2.76 c -0.09,-0.17 -0.31,-0.24 -0.48,-0.17 l -1.99,.8 c -0.41,-0.32 -0.86,-0.58 -1.35,-0.78 l -0.30,-2.12 c -0.02,-0.19 -0.19,-0.33 -0.39,-0.33 l -3.2,0 c -0.2,0 -0.36,.14 -0.39,.33 l -0.30,2.12 c -0.48,.2 -0.93,.47 -1.35,.78 l -1.99,-0.8 c -0.18,-0.07 -0.39,0 -0.48,.17 l -1.6,2.76 c -0.10,.17 -0.05,.39 .09,.51 l 1.68,1.32 c -0.03,.25 -0.05,.52 -0.05,.78 0,.26 .02,.52 .05,.78 l -1.68,1.32 c -0.15,.12 -0.19,.33 -0.09,.51 l 1.6,2.76 c .09,.17 .31,.24 .48,.17 l 1.99,-0.8 c .41,.32 .86,.58 1.35,.78 l .30,2.12 c .02,.19 .19,.33 .39,.33 l 3.2,0 c .2,0 .36,-0.14 .39,-0.33 l .30,-2.12 c .48,-0.2 .93,-0.47 1.35,-0.78 l 1.99,.8 c .18,.07 .39,0 .48,-0.17 l 1.6,-2.76 c .09,-0.17 .05,-0.39 -0.09,-0.51 l -1.68,-1.32 0,0 z m -5.94,2.01 c -1.54,0 -2.8,-1.25 -2.8,-2.8 0,-1.54 1.25,-2.8 2.8,-2.8 1.54,0 2.8,1.25 2.8,2.8 0,1.54 -1.25,2.8 -2.8,2.8 l 0,0 z" fill="#fff" id="ytp-id-18"></path></svg>
+        </div>
+        <div class="panel__toggle-screen" id="panel-screen" style="display: none">
             <svg fill="#fff" height="36px" version="1.1" viewBox="0 0 36 36" width="36px">
                 <g class="ytp-fullscreen-button-corner-0">
                     <use class="ytp-svg-shadow" xlink:href="#ytp-id-6"></use>
@@ -66,6 +98,6 @@
         </div>
     </div>
 </div>
-<script src="./script.js"/>
+<script src="./src/script.js"/>
 </body>
 </html>
