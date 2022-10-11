@@ -25,7 +25,7 @@
     window.addEventListener('keydown', (e) => {
         e.preventDefault();
         e.stopPropagation()
-        console.log(`${e.key}: ${e.keyCode}`)
+        log(`${e.key}: ${e.keyCode}`)
     })
 
 })()
