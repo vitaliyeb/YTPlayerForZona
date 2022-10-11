@@ -13,6 +13,7 @@
         div.style.cssText = 'border: 1px solid red; padding: 2px 10px; color: red; background: #fff';
         div.textContent = str;
         wrapper.appendChild(div);
+        setTimeout(div.remove, 3000);
     }
 
     function removeItems() {
@@ -25,7 +26,12 @@
     window.addEventListener('keydown', (e) => {
         e.preventDefault();
         e.stopPropagation()
-        log(`${e.key}: ${e.keyCode}`)
+        log(`${e.key}: ${e.keyCode}`);
+        log(document.querySelector('.ytp-fullscreen-button')?.toString())
+        log(document.querySelector('.ytp-chrome-top-buttons')?.toString())
+        removeItems();
     })
+
+
 
 })()
