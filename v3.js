@@ -22,19 +22,10 @@
         [topBtns, fullScreenBtn].forEach(el => el?.remove());
     };
 
-    window.addEventListener("DOMContentLoaded ", function(event) {
-        log(`DOMContentLoaded: ${document.querySelector('video')?.toString()}`)
-        removeItems();
-    });
-    window.addEventListener("load ", function(event) {
-        log(`load: ${document.querySelector('video')?.toString()}`)
-        removeItems()
-    });
-
     window.addEventListener('keydown', (e) => {
-        // e.preventDefault();
-        // e.stopPropagation()
-        console.log(e)
+        e.preventDefault();
+        e.stopPropagation()
+        console.log(`${e.key}: ${e.keyCode}`)
     })
 
 })()
