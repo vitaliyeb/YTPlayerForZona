@@ -29,6 +29,6 @@
   window.addEventListener('keydown', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log("".concat(e.key, ": ").concat(e.keyCode));
+    log("".concat(e.key, ": ").concat(e.keyCode));
   });
 })();
