@@ -15,6 +15,7 @@
     div.style.cssText = 'border: 1px solid red; padding: 2px 10px; color: red; background: #fff';
     div.textContent = str;
     wrapper.appendChild(div);
+    setTimeout(div.remove, 3000);
   }
 
   function removeItems() {
@@ -27,8 +28,13 @@
 
   ;
   window.addEventListener('keydown', function (e) {
+    var _document$querySelect, _document$querySelect2;
+
     e.preventDefault();
     e.stopPropagation();
     log("".concat(e.key, ": ").concat(e.keyCode));
+    log((_document$querySelect = document.querySelector('.ytp-fullscreen-button')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.toString());
+    log((_document$querySelect2 = document.querySelector('.ytp-chrome-top-buttons')) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.toString());
+    removeItems();
   });
 })();
