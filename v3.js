@@ -1,6 +1,31 @@
-
-
 (function () {
+    const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
+    const UIVideo = document.querySelector('video');
+
+    const iterationState = 'default';
+
+    function wind(vec) {
+        try {
+            console.log('wind', vec)
+            UIVideo.dispatchEvent(new KeyboardEvent('keydown', {
+                key: vec === 'right' ? 'ArrowRight' : 'ArrowLeft',
+                keyCode: vec === 'right' ? 39 : 37,
+                cancelable: false,
+                bubbles: true,
+            }))
+        } catch (e) {
+            console.log('wind err', e)
+        }
+    }
+
+    function iteration(key) {
+        switch (iterationState) {
+            case "default":
+                wind(key)
+                break;
+        }
+    }
+
     function log(str) {
         let wrapper = document.getElementById('log-wrapper');
         if (!wrapper) {
@@ -24,12 +49,24 @@
     };
 
     window.addEventListener('keydown', (e) => {
+        if (!e.isTrusted) return;
         e.preventDefault();
-        e.stopPropagation()
-        log(`${e.key}: ${e.keyCode}`);
-        log(document.querySelector('.ytp-fullscreen-button')?.toString())
-        log(document.querySelector('.ytp-chrome-top-buttons')?.toString())
-    })
+        e.stopPropagation();
+        iteration({
+            50: 'bottom',
+            54: 'right',
+            56: 'top',
+            52: 'left'
+        }[e.keyCode]);
+        // iteration({
+        //     50: 'bottom',
+        //     39: 'right',
+        //     56: 'top',
+        //     37: 'left'
+        //
+        // }[e.keyCode]);
+        log(`${e.key}: ${e.keyCode}, ${iterationState}`);
+    }, {capture: true})
 
     document.querySelector('video').click();
     removeItems();

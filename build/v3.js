@@ -1,6 +1,32 @@
 "use strict";
 
 (function () {
+  var UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
+  var UIVideo = document.querySelector('video');
+  var iterationState = 'default';
+
+  function wind(vec) {
+    try {
+      console.log('wind', vec);
+      UIVideo.dispatchEvent(new KeyboardEvent('keydown', {
+        key: vec === 'right' ? 'ArrowRight' : 'ArrowLeft',
+        keyCode: vec === 'right' ? 39 : 37,
+        cancelable: false,
+        bubbles: true
+      }));
+    } catch (e) {
+      console.log('wind err', e);
+    }
+  }
+
+  function iteration(key) {
+    switch (iterationState) {
+      case "default":
+        wind(key);
+        break;
+    }
+  }
+
   function log(str) {
     var wrapper = document.getElementById('log-wrapper');
 
@@ -30,13 +56,25 @@
 
   ;
   window.addEventListener('keydown', function (e) {
-    var _document$querySelect, _document$querySelect2;
-
+    if (!e.isTrusted) return;
     e.preventDefault();
     e.stopPropagation();
-    log("".concat(e.key, ": ").concat(e.keyCode));
-    log((_document$querySelect = document.querySelector('.ytp-fullscreen-button')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.toString());
-    log((_document$querySelect2 = document.querySelector('.ytp-chrome-top-buttons')) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.toString());
+    iteration({
+      50: 'bottom',
+      54: 'right',
+      56: 'top',
+      52: 'left'
+    }[e.keyCode]); // iteration({
+    //     50: 'bottom',
+    //     39: 'right',
+    //     56: 'top',
+    //     37: 'left'
+    //
+    // }[e.keyCode]);
+
+    log("".concat(e.key, ": ").concat(e.keyCode, ", ").concat(iterationState));
+  }, {
+    capture: true
   });
   document.querySelector('video').click();
   removeItems();
