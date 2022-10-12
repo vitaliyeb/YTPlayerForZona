@@ -1,22 +1,16 @@
 (function () {
     const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
     const UIVideo = document.querySelector('video');
+    const player = document.getElementById("movie_player");
 
     const iterationState = 'default';
 
-    function wind(vec) {
-        log(`vec: ${vec}`)
-        try {
-            console.log('wind', vec)
-            UIVideo.dispatchEvent(new KeyboardEvent('keydown', {
-                key: vec === 'right' ? 'ArrowRight' : 'ArrowLeft',
-                keyCode: vec === 'right' ? 39 : 37,
-                cancelable: false,
-                bubbles: true,
-            }))
-            log(`push event`)
-        } catch (e) {
-            console.log('wind err', e)
+
+    function togglePlayStatus() {
+        if (player.getPlayerState() == 1) {
+            player.pauseVideo();
+        } else {
+            player.playVideo();
         }
     }
 
@@ -24,8 +18,17 @@
         log(`iteration: ${key} = ${iterationState}`)
         switch (iterationState) {
             case "default":
-                log(`default: ${key}`)
-                wind(key)
+                switch (key) {
+                    case 'right':
+                        player.seekTo(player.getCurrentTime() + 5, true);
+                        break;
+                    case 'left':
+                        player.seekTo(player.getCurrentTime() - 5, true);
+                        break;
+                    case 'ok':
+                        togglePlayStatus();
+                        break;
+                }
                 break;
         }
     }
@@ -60,7 +63,8 @@
             50: 'bottom',
             54: 'right',
             56: 'top',
-            52: 'left'
+            52: 'left',
+            32: 'ok'
         }[e.keyCode]);
         // iteration({
         //     50: 'bottom',
