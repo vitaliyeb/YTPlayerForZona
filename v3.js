@@ -3,10 +3,13 @@
     const UIVideo = document.querySelector('video');
     const player = document.getElementById("movie_player");
 
+    let panelTimerID = null;
+
     const iterationState = 'default';
+    //ytp-autohide
 
-
-    function togglePlayStatus() {
+    function togglePlayStatus(isTimer = true) {
+        openPanel(isTimer);
         if (player.getPlayerState() == 1) {
             player.pauseVideo();
         } else {
@@ -14,18 +17,36 @@
         }
     }
 
+    function openPanel(isTimer) {
+        window.clearTimeout(panelTimerID);
+        player.classList.remove('ytp-autohide');
+        if (isTimer) {
+            panelTimerID = setTimeout(closePanel, 3000);
+        }
+    }
+    function closePanel() {
+        window.clearTimeout(panelTimerID);
+        player.classList.add('ytp-autohide');
+    }
+
+    function wind(sec = 0) {
+        openPanel(true);
+        player.seekTo(player.getCurrentTime() + sec, true);
+    }
+
     function iteration(key) {
-        log(`iteration: ${key} = ${iterationState}`)
+        // log(`iteration: ${key} = ${iterationState}`)
         switch (iterationState) {
             case "default":
                 switch (key) {
                     case 'right':
-                        player.seekTo(player.getCurrentTime() + 5, true);
+                        wind(5);
                         break;
                     case 'left':
-                        player.seekTo(player.getCurrentTime() - 5, true);
+                        wind(-5);
                         break;
                     case 'ok':
+                        openPanel();
                         togglePlayStatus();
                         break;
                 }
@@ -70,7 +91,8 @@
         //     50: 'bottom',
         //     39: 'right',
         //     56: 'top',
-        //     37: 'left'
+        //     37: 'left',
+        //     32: 'ok'
         //
         // }[e.keyCode]);
         log(`${e.key}: ${e.keyCode}, ${iterationState}`);

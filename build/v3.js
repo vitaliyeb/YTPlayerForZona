@@ -4,9 +4,13 @@
   var UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
   var UIVideo = document.querySelector('video');
   var player = document.getElementById("movie_player");
-  var iterationState = 'default';
+  var panelTimerID = null;
+  var iterationState = 'default'; //ytp-autohide
 
   function togglePlayStatus() {
+    var isTimer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+    openPanel(isTimer);
+
     if (player.getPlayerState() == 1) {
       player.pauseVideo();
     } else {
@@ -14,21 +18,41 @@
     }
   }
 
-  function iteration(key) {
-    log("iteration: ".concat(key, " = ").concat(iterationState));
+  function openPanel(isTimer) {
+    window.clearTimeout(panelTimerID);
+    player.classList.remove('ytp-autohide');
 
+    if (isTimer) {
+      panelTimerID = setTimeout(closePanel, 3000);
+    }
+  }
+
+  function closePanel() {
+    window.clearTimeout(panelTimerID);
+    player.classList.add('ytp-autohide');
+  }
+
+  function wind() {
+    var sec = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    openPanel(true);
+    player.seekTo(player.getCurrentTime() + sec, true);
+  }
+
+  function iteration(key) {
+    // log(`iteration: ${key} = ${iterationState}`)
     switch (iterationState) {
       case "default":
         switch (key) {
           case 'right':
-            player.seekTo(player.getCurrentTime() + 5, true);
+            wind(5);
             break;
 
           case 'left':
-            player.seekTo(player.getCurrentTime() - 5, true);
+            wind(-5);
             break;
 
           case 'ok':
+            openPanel();
             togglePlayStatus();
             break;
         }
@@ -79,7 +103,8 @@
     //     50: 'bottom',
     //     39: 'right',
     //     56: 'top',
-    //     37: 'left'
+    //     37: 'left',
+    //     32: 'ok'
     //
     // }[e.keyCode]);
 
