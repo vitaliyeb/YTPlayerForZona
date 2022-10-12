@@ -19,8 +19,10 @@
     }
 
     function iteration(key) {
+        log(`iteration: ${key} = ${iterationState}`)
         switch (iterationState) {
             case "default":
+                log(`default: ${key}`)
                 wind(key)
                 break;
         }

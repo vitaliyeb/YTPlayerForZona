@@ -20,8 +20,11 @@
   }
 
   function iteration(key) {
+    log("iteration: ".concat(key, " = ").concat(iterationState));
+
     switch (iterationState) {
       case "default":
+        log("default: ".concat(key));
         wind(key);
         break;
     }
