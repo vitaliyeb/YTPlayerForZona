@@ -6,6 +6,8 @@
   var iterationState = 'default';
 
   function wind(vec) {
+    log("vec: ".concat(vec));
+
     try {
       console.log('wind', vec);
       UIVideo.dispatchEvent(new KeyboardEvent('keydown', {
@@ -14,6 +16,7 @@
         cancelable: false,
         bubbles: true
       }));
+      log("push event");
     } catch (e) {
       console.log('wind err', e);
     }
