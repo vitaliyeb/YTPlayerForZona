@@ -202,12 +202,19 @@
     e.preventDefault();
     e.stopPropagation();
     iteration({
-      50: 'bottom',
-      54: 'right',
-      56: 'top',
-      52: 'left',
-      32: 'ok'
+      40: 'bottom',
+      39: 'right',
+      38: 'top',
+      37: 'left',
+      13: 'ok'
     }[e.keyCode]); // iteration({
+    //     50: 'bottom',
+    //     54: 'right',
+    //     56: 'top',
+    //     52: 'left',
+    //     32: 'ok'
+    // }[e.keyCode]);
+    // iteration({
     //     40: 'bottom',
     //     39: 'right',
     //     38: 'top',
