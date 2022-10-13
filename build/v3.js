@@ -3,9 +3,20 @@
 (function () {
   var UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
   var UIVideo = document.querySelector('video');
+  var UIYTSettingBtn = document.querySelector('.ytp-settings-button');
   var player = document.getElementById("movie_player");
   var panelTimerID = null;
-  var iterationState = 'default'; //ytp-autohide
+  var iterationState = 'default';
+  var selectClass = 'UISelect';
+  var styleEl = document.createElement('style');
+  styleEl.type = 'text/css';
+  styleEl.innerHTML = ".".concat(selectClass, " { outline: solid !important; }; .ytp-panel-header- {display: none}");
+  document.head.appendChild(styleEl);
+
+  function goTo(nextEl) {
+    resetSelect();
+    nextEl.classList.add(selectClass);
+  }
 
   function togglePlayStatus() {
     var isTimer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
@@ -18,6 +29,32 @@
     }
   }
 
+  function changeSettingItem() {
+    var mod = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var items = Array.from(document.querySelectorAll('.ytp-menuitem'));
+    var selectedIdx = items.findIndex(function (el) {
+      return el.classList.contains(selectClass);
+    });
+
+    if (~selectedIdx) {
+      var nextIdx = selectedIdx + mod;
+      var item = nextIdx < 0 ? items.at(-1) : nextIdx > items.length - 1 ? items.at(0) : items[nextIdx];
+      goTo(item);
+      item === null || item === void 0 ? void 0 : item.scrollIntoView({
+        block: 'center',
+        behavior: "smooth"
+      });
+    } else {
+      var _items$;
+
+      goTo(items[0]);
+      (_items$ = items[0]) === null || _items$ === void 0 ? void 0 : _items$.scrollIntoView({
+        block: 'center',
+        behavior: "smooth"
+      });
+    }
+  }
+
   function openPanel(isTimer) {
     window.clearTimeout(panelTimerID);
     player.classList.remove('ytp-autohide');
@@ -25,6 +62,12 @@
     if (isTimer) {
       panelTimerID = setTimeout(closePanel, 3000);
     }
+  }
+
+  function resetSelect() {
+    Array.from(document.querySelectorAll(".".concat(selectClass))).forEach(function (el) {
+      return el.classList.remove(selectClass);
+    });
   }
 
   function closePanel() {
@@ -39,7 +82,11 @@
   }
 
   function iteration(key) {
+    var _document$querySelect;
+
     // log(`iteration: ${key} = ${iterationState}`)
+    console.log("iteration: ".concat(key, " = ").concat(iterationState));
+
     switch (iterationState) {
       case "default":
         switch (key) {
@@ -54,6 +101,63 @@
           case 'ok':
             openPanel();
             togglePlayStatus();
+            break;
+
+          case 'bottom':
+            iterationState = 'setting-button-selected';
+            goTo(UIYTSettingBtn);
+            openPanel(false);
+            break;
+        }
+
+        break;
+
+      case 'setting-button-selected':
+        switch (key) {
+          case 'top':
+            iterationState = 'default';
+            closePanel();
+            resetSelect();
+            break;
+
+          case 'ok':
+            iterationState = 'open-setting';
+            Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(function (el) {
+              return el.remove();
+            });
+            UIYTSettingBtn.click();
+            setTimeout(function () {
+              changeSettingItem(0);
+            }, 0);
+            break;
+        }
+
+        break;
+
+      case 'open-setting':
+        switch (key) {
+          case 'ok':
+            var isQuality = !!document.querySelector('.ytp-quality-menu');
+            (_document$querySelect = document.querySelector(".ytp-menuitem.".concat(selectClass))) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.click();
+            resetSelect();
+
+            if (isQuality) {
+              iterationState = 'default';
+              closePanel();
+            } else {
+              setTimeout(function () {
+                return changeSettingItem(0);
+              }, 300);
+            }
+
+            break;
+
+          case 'top':
+            changeSettingItem(-1);
+            break;
+
+          case 'bottom':
+            changeSettingItem(1);
             break;
         }
 
@@ -83,7 +187,11 @@
   function removeItems() {
     var fullScreenBtn = document.querySelector('.ytp-fullscreen-button');
     var topBtns = document.querySelector('.ytp-chrome-top-buttons');
-    [topBtns, fullScreenBtn].forEach(function (el) {
+    var remoteBtn = document.querySelector('.ytp-remote-button');
+    var ytBtn = document.querySelector('.ytp-youtube-button');
+    var subBtn = document.querySelector('.ytp-subtitles-button');
+    var vol = document.querySelector('.ytp-volume-area');
+    [topBtns, fullScreenBtn, remoteBtn, ytBtn, subBtn, vol].forEach(function (el) {
       return el === null || el === void 0 ? void 0 : el.remove();
     });
   }
@@ -100,12 +208,11 @@
       52: 'left',
       32: 'ok'
     }[e.keyCode]); // iteration({
-    //     50: 'bottom',
+    //     40: 'bottom',
     //     39: 'right',
-    //     56: 'top',
+    //     38: 'top',
     //     37: 'left',
     //     32: 'ok'
-    //
     // }[e.keyCode]);
 
     log("".concat(e.key, ": ").concat(e.keyCode, ", ").concat(iterationState));

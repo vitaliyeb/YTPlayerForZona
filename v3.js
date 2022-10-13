@@ -1,12 +1,24 @@
 (function () {
     const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
     const UIVideo = document.querySelector('video');
+    const UIYTSettingBtn = document.querySelector('.ytp-settings-button');
+
     const player = document.getElementById("movie_player");
 
     let panelTimerID = null;
 
-    const iterationState = 'default';
-    //ytp-autohide
+    let iterationState = 'default';
+    const selectClass = 'UISelect';
+
+    const styleEl = document.createElement('style');
+    styleEl.type = 'text/css';
+    styleEl.innerHTML = `.${selectClass} { outline: solid !important; }; .ytp-panel-header- {display: none}`;
+    document.head.appendChild(styleEl);
+
+    function goTo(nextEl) {
+        resetSelect();
+        nextEl.classList.add(selectClass);
+    }
 
     function togglePlayStatus(isTimer = true) {
         openPanel(isTimer);
@@ -17,6 +29,20 @@
         }
     }
 
+    function changeSettingItem(mod = 0) {
+        const items = Array.from(document.querySelectorAll('.ytp-menuitem'));
+        const selectedIdx = items.findIndex(el => el.classList.contains(selectClass));
+        if (~selectedIdx) {
+            const nextIdx = selectedIdx + mod;
+            const item = nextIdx < 0 ? items.at(-1) : nextIdx > (items.length - 1) ? items.at(0) : items[nextIdx];
+            goTo(item);
+            item?.scrollIntoView({block: 'center', behavior: "smooth"});
+        } else {
+            goTo(items[0]);
+            items[0]?.scrollIntoView({block: 'center', behavior: "smooth"});
+        }
+    }
+
     function openPanel(isTimer) {
         window.clearTimeout(panelTimerID);
         player.classList.remove('ytp-autohide');
@@ -24,6 +50,11 @@
             panelTimerID = setTimeout(closePanel, 3000);
         }
     }
+
+    function resetSelect() {
+        Array.from(document.querySelectorAll(`.${selectClass}`)).forEach(el => el.classList.remove(selectClass));
+    }
+
     function closePanel() {
         window.clearTimeout(panelTimerID);
         player.classList.add('ytp-autohide');
@@ -36,6 +67,7 @@
 
     function iteration(key) {
         // log(`iteration: ${key} = ${iterationState}`)
+        console.log(`iteration: ${key} = ${iterationState}`);
         switch (iterationState) {
             case "default":
                 switch (key) {
@@ -48,6 +80,49 @@
                     case 'ok':
                         openPanel();
                         togglePlayStatus();
+                        break;
+                    case 'bottom':
+                        iterationState = 'setting-button-selected'
+                        goTo(UIYTSettingBtn);
+                        openPanel(false);
+                        break;
+                }
+                break;
+            case 'setting-button-selected':
+                switch (key) {
+                    case 'top':
+                        iterationState = 'default';
+                        closePanel();
+                        resetSelect();
+                        break;
+                    case 'ok':
+                        iterationState = 'open-setting';
+                        Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(el => el.remove());
+                        UIYTSettingBtn.click();
+                        setTimeout(() => {
+                            changeSettingItem(0);
+                        }, 0)
+                        break;
+                }
+                break;
+            case 'open-setting':
+                switch (key) {
+                    case 'ok':
+                        const isQuality = !!document.querySelector('.ytp-quality-menu');
+                        document.querySelector(`.ytp-menuitem.${selectClass}`)?.click();
+                        resetSelect();
+                        if (isQuality) {
+                            iterationState = 'default'
+                            closePanel();
+                        } else {
+                            setTimeout(() => changeSettingItem(0), 300);
+                        }
+                        break;
+                    case 'top':
+                        changeSettingItem(-1);
+                        break;
+                    case 'bottom':
+                        changeSettingItem(1);
                         break;
                 }
                 break;
@@ -72,8 +147,12 @@
     function removeItems() {
         const fullScreenBtn = document.querySelector('.ytp-fullscreen-button');
         const topBtns = document.querySelector('.ytp-chrome-top-buttons');
+        const remoteBtn = document.querySelector('.ytp-remote-button');
+        const ytBtn = document.querySelector('.ytp-youtube-button');
+        const subBtn = document.querySelector('.ytp-subtitles-button');
+        const vol = document.querySelector('.ytp-volume-area');
 
-        [topBtns, fullScreenBtn].forEach(el => el?.remove());
+        [topBtns, fullScreenBtn, remoteBtn, ytBtn, subBtn, vol].forEach(el => el?.remove());
     };
 
     window.addEventListener('keydown', (e) => {
@@ -88,12 +167,11 @@
             32: 'ok'
         }[e.keyCode]);
         // iteration({
-        //     50: 'bottom',
+        //     40: 'bottom',
         //     39: 'right',
-        //     56: 'top',
+        //     38: 'top',
         //     37: 'left',
         //     32: 'ok'
-        //
         // }[e.keyCode]);
         log(`${e.key}: ${e.keyCode}, ${iterationState}`);
     }, {capture: true})
