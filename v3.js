@@ -2,6 +2,7 @@
     const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
     const UIVideo = document.querySelector('video');
     const UIYTSettingBtn = document.querySelector('.ytp-settings-button');
+    const UIPlayBtn = document.querySelector('.ytp-play-button');
 
     const player = document.getElementById("movie_player");
 
@@ -82,9 +83,25 @@
                         togglePlayStatus();
                         break;
                     case 'bottom':
-                        iterationState = 'setting-button-selected'
-                        goTo(UIYTSettingBtn);
+                        iterationState = 'play-button'
+                        goTo(UIPlayBtn);
                         openPanel(false);
+                        break;
+                }
+                break;
+            case 'play-button':
+                switch (key) {
+                    case 'top':
+                        iterationState = 'default';
+                        closePanel();
+                        resetSelect();
+                        break;
+                    case 'ok':
+                        togglePlayStatus();
+                        break;
+                    case 'right':
+                        iterationState = 'setting-button-selected';
+                        goTo(UIYTSettingBtn);
                         break;
                 }
                 break;
@@ -97,11 +114,15 @@
                         break;
                     case 'ok':
                         iterationState = 'open-setting';
-                        Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(el => el.remove());
                         UIYTSettingBtn.click();
+                        Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(el => el.remove());
                         setTimeout(() => {
                             changeSettingItem(0);
                         }, 0)
+                        break;
+                    case 'left':
+                        iterationState = 'play-button';
+                        goTo(UIPlayBtn);
                         break;
                 }
                 break;

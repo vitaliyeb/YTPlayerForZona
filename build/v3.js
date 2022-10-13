@@ -4,6 +4,7 @@
   var UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
   var UIVideo = document.querySelector('video');
   var UIYTSettingBtn = document.querySelector('.ytp-settings-button');
+  var UIPlayBtn = document.querySelector('.ytp-play-button');
   var player = document.getElementById("movie_player");
   var panelTimerID = null;
   var iterationState = 'default';
@@ -104,9 +105,29 @@
             break;
 
           case 'bottom':
+            iterationState = 'play-button';
+            goTo(UIPlayBtn);
+            openPanel(false);
+            break;
+        }
+
+        break;
+
+      case 'play-button':
+        switch (key) {
+          case 'top':
+            iterationState = 'default';
+            closePanel();
+            resetSelect();
+            break;
+
+          case 'ok':
+            togglePlayStatus();
+            break;
+
+          case 'right':
             iterationState = 'setting-button-selected';
             goTo(UIYTSettingBtn);
-            openPanel(false);
             break;
         }
 
@@ -122,13 +143,18 @@
 
           case 'ok':
             iterationState = 'open-setting';
+            UIYTSettingBtn.click();
             Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(function (el) {
               return el.remove();
             });
-            UIYTSettingBtn.click();
             setTimeout(function () {
               changeSettingItem(0);
             }, 0);
+            break;
+
+          case 'left':
+            iterationState = 'play-button';
+            goTo(UIPlayBtn);
             break;
         }
 
