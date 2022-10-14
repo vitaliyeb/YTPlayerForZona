@@ -43,7 +43,7 @@
 
     if (~selectedIdx) {
       var nextIdx = selectedIdx + mod;
-      var item = nextIdx < 0 ? items.at(-1) : nextIdx > items.length - 1 ? items.at(0) : items[nextIdx];
+      var item = nextIdx < 0 ? items[items.length - 1] : nextIdx > items.length - 1 ? items[0] : items[nextIdx];
       goTo(item);
       item === null || item === void 0 ? void 0 : item.scrollIntoView({
         block: 'center',
@@ -239,22 +239,22 @@
   window.addEventListener('keydown', function (e) {
     if (!e.isTrusted) return;
     e.preventDefault();
-    e.stopPropagation(); // iteration({
-    //     40: 'bottom',
-    //     39: 'right',
-    //     38: 'top',
-    //     37: 'left',
-    //     13: 'ok'
-    // }[e.keyCode]);
-    // pla
-
+    e.stopPropagation();
     iteration({
-      50: 'bottom',
-      54: 'right',
-      56: 'top',
-      52: 'left',
-      32: 'ok'
-    }[e.keyCode]); //pc
+      40: 'bottom',
+      39: 'right',
+      38: 'top',
+      37: 'left',
+      13: 'ok'
+    }[e.keyCode]); // pla
+    // iteration({
+    //     50: 'bottom',
+    //     54: 'right',
+    //     56: 'top',
+    //     52: 'left',
+    //     32: 'ok'
+    // }[e.keyCode]);
+    //pc
     // iteration({
     //     40: 'bottom',
     //     39: 'right',

@@ -40,7 +40,7 @@
         const selectedIdx = items.findIndex(el => el.classList.contains(selectClass));
         if (~selectedIdx) {
             const nextIdx = selectedIdx + mod;
-            const item = nextIdx < 0 ? items.at(-1) : nextIdx > (items.length - 1) ? items.at(0) : items[nextIdx];
+            const item = nextIdx < 0 ? items[items.length - 1] : nextIdx > (items.length - 1) ? items[0] : items[nextIdx];
             goTo(item);
             item?.scrollIntoView({block: 'center', behavior: "smooth"});
         } else {
@@ -195,21 +195,21 @@
         if (!e.isTrusted) return;
         e.preventDefault();
         e.stopPropagation();
-        // iteration({
-        //     40: 'bottom',
-        //     39: 'right',
-        //     38: 'top',
-        //     37: 'left',
-        //     13: 'ok'
-        // }[e.keyCode]);
-        // pla
         iteration({
-            50: 'bottom',
-            54: 'right',
-            56: 'top',
-            52: 'left',
-            32: 'ok'
+            40: 'bottom',
+            39: 'right',
+            38: 'top',
+            37: 'left',
+            13: 'ok'
         }[e.keyCode]);
+        // pla
+        // iteration({
+        //     50: 'bottom',
+        //     54: 'right',
+        //     56: 'top',
+        //     52: 'left',
+        //     32: 'ok'
+        // }[e.keyCode]);
         //pc
         // iteration({
         //     40: 'bottom',
