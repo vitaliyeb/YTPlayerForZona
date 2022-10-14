@@ -7,6 +7,7 @@
   var UILeftControls = document.querySelector('.ytp-left-controls');
   var UIYTSettingBtn = document.querySelector('.ytp-settings-button');
   var UIPlayBtn = document.querySelector('.ytp-play-button');
+  var UISettingPopup = document.querySelector('.ytp-popup.ytp-settings-menu');
   var player = document.getElementById("movie_player");
   var panelTimerID = null;
   var iterationState = 'default';
@@ -17,6 +18,7 @@
   document.head.appendChild(styleEl);
   UIBottomControls.style.marginBottom = '5px';
   UILeftControls.style.padding = '0px 2px 2px';
+  document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
 
   function goTo(nextEl) {
     resetSelect();
@@ -64,7 +66,7 @@
     window.clearTimeout(panelTimerID);
     player.classList.remove('ytp-autohide');
 
-    if (isTimer) {
+    if (true) {
       panelTimerID = setTimeout(closePanel, 3000);
     }
   }
@@ -76,7 +78,13 @@
   }
 
   function closePanel() {
+    iterationState = 'default';
     window.clearTimeout(panelTimerID);
+
+    if (UISettingPopup.style.display !== 'none') {
+      UIYTSettingBtn.click();
+    }
+
     player.classList.add('ytp-autohide');
   }
 
@@ -239,22 +247,22 @@
   window.addEventListener('keydown', function (e) {
     if (!e.isTrusted) return;
     e.preventDefault();
-    e.stopPropagation();
-    iteration({
-      40: 'bottom',
-      39: 'right',
-      38: 'top',
-      37: 'left',
-      13: 'ok'
-    }[e.keyCode]); // pla
-    // iteration({
-    //     50: 'bottom',
-    //     54: 'right',
-    //     56: 'top',
-    //     52: 'left',
-    //     32: 'ok'
+    e.stopPropagation(); // iteration({
+    //     40: 'bottom',
+    //     39: 'right',
+    //     38: 'top',
+    //     37: 'left',
+    //     13: 'ok'
     // }[e.keyCode]);
-    //pc
+    // pla
+
+    iteration({
+      50: 'bottom',
+      54: 'right',
+      56: 'top',
+      52: 'left',
+      32: 'ok'
+    }[e.keyCode]); //pc
     // iteration({
     //     40: 'bottom',
     //     39: 'right',

@@ -5,6 +5,7 @@
     const UILeftControls = document.querySelector('.ytp-left-controls');
     const UIYTSettingBtn = document.querySelector('.ytp-settings-button');
     const UIPlayBtn = document.querySelector('.ytp-play-button');
+    const UISettingPopup = document.querySelector('.ytp-popup.ytp-settings-menu');
 
     const player = document.getElementById("movie_player");
 
@@ -20,6 +21,7 @@
 
     UIBottomControls.style.marginBottom = '5px';
     UILeftControls.style.padding = '0px 2px 2px'
+    document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
 
     function goTo(nextEl) {
         resetSelect();
@@ -52,7 +54,7 @@
     function openPanel(isTimer) {
         window.clearTimeout(panelTimerID);
         player.classList.remove('ytp-autohide');
-        if (isTimer) {
+        if (true) {
             panelTimerID = setTimeout(closePanel, 3000);
         }
     }
@@ -62,7 +64,12 @@
     }
 
     function closePanel() {
+        iterationState = 'default'
         window.clearTimeout(panelTimerID);
+
+        if (UISettingPopup.style.display !== 'none') {
+            UIYTSettingBtn.click();
+        }
         player.classList.add('ytp-autohide');
     }
 
@@ -195,21 +202,21 @@
         if (!e.isTrusted) return;
         e.preventDefault();
         e.stopPropagation();
-        iteration({
-            40: 'bottom',
-            39: 'right',
-            38: 'top',
-            37: 'left',
-            13: 'ok'
-        }[e.keyCode]);
-        // pla
         // iteration({
-        //     50: 'bottom',
-        //     54: 'right',
-        //     56: 'top',
-        //     52: 'left',
-        //     32: 'ok'
+        //     40: 'bottom',
+        //     39: 'right',
+        //     38: 'top',
+        //     37: 'left',
+        //     13: 'ok'
         // }[e.keyCode]);
+        // pla
+        iteration({
+            50: 'bottom',
+            54: 'right',
+            56: 'top',
+            52: 'left',
+            32: 'ok'
+        }[e.keyCode]);
         //pc
         // iteration({
         //     40: 'bottom',
