@@ -1,6 +1,8 @@
 (function () {
     const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
     const UIVideo = document.querySelector('video');
+    const UIBottomControls = document.querySelector('.ytp-chrome-bottom');
+    const UILeftControls = document.querySelector('.ytp-left-controls');
     const UIYTSettingBtn = document.querySelector('.ytp-settings-button');
     const UIPlayBtn = document.querySelector('.ytp-play-button');
 
@@ -15,6 +17,9 @@
     styleEl.type = 'text/css';
     styleEl.innerHTML = `.${selectClass} { outline: solid !important; }; .ytp-panel-header- {display: none}`;
     document.head.appendChild(styleEl);
+
+    UIBottomControls.style.marginBottom = '5px';
+    UILeftControls.style.padding = '0px 2px 2px'
 
     function goTo(nextEl) {
         resetSelect();
@@ -69,6 +74,9 @@
     function iteration(key) {
         // log(`iteration: ${key} = ${iterationState}`)
         console.log(`iteration: ${key} = ${iterationState}`);
+        if(key === 'bottom') {
+            openPanel()
+        }
         switch (iterationState) {
             case "default":
                 switch (key) {
@@ -100,6 +108,7 @@
                         togglePlayStatus();
                         break;
                     case 'right':
+                        openPanel();
                         iterationState = 'setting-button-selected';
                         goTo(UIYTSettingBtn);
                         break;
@@ -113,15 +122,18 @@
                         resetSelect();
                         break;
                     case 'ok':
+                        openPanel();
                         iterationState = 'open-setting';
                         UIYTSettingBtn.click();
-                        Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(el => el.remove());
+                        // Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(el => el.remove());
+                        // document.querySelector('.ytp-settings-menu').style.height = '51px';
                         setTimeout(() => {
                             changeSettingItem(0);
                         }, 0)
                         break;
                     case 'left':
                         iterationState = 'play-button';
+                        openPanel();
                         goTo(UIPlayBtn);
                         break;
                 }
@@ -129,6 +141,7 @@
             case 'open-setting':
                 switch (key) {
                     case 'ok':
+                        openPanel();
                         const isQuality = !!document.querySelector('.ytp-quality-menu');
                         document.querySelector(`.ytp-menuitem.${selectClass}`)?.click();
                         resetSelect();
@@ -140,9 +153,11 @@
                         }
                         break;
                     case 'top':
+                        openPanel();
                         changeSettingItem(-1);
                         break;
                     case 'bottom':
+                        openPanel();
                         changeSettingItem(1);
                         break;
                 }
@@ -180,20 +195,22 @@
         if (!e.isTrusted) return;
         e.preventDefault();
         e.stopPropagation();
-        iteration({
-            40: 'bottom',
-            39: 'right',
-            38: 'top',
-            37: 'left',
-            13: 'ok'
-        }[e.keyCode]);
         // iteration({
-        //     50: 'bottom',
-        //     54: 'right',
-        //     56: 'top',
-        //     52: 'left',
-        //     32: 'ok'
+        //     40: 'bottom',
+        //     39: 'right',
+        //     38: 'top',
+        //     37: 'left',
+        //     13: 'ok'
         // }[e.keyCode]);
+        // pla
+        iteration({
+            50: 'bottom',
+            54: 'right',
+            56: 'top',
+            52: 'left',
+            32: 'ok'
+        }[e.keyCode]);
+        //pc
         // iteration({
         //     40: 'bottom',
         //     39: 'right',

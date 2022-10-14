@@ -3,6 +3,8 @@
 (function () {
   var UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
   var UIVideo = document.querySelector('video');
+  var UIBottomControls = document.querySelector('.ytp-chrome-bottom');
+  var UILeftControls = document.querySelector('.ytp-left-controls');
   var UIYTSettingBtn = document.querySelector('.ytp-settings-button');
   var UIPlayBtn = document.querySelector('.ytp-play-button');
   var player = document.getElementById("movie_player");
@@ -13,6 +15,8 @@
   styleEl.type = 'text/css';
   styleEl.innerHTML = ".".concat(selectClass, " { outline: solid !important; }; .ytp-panel-header- {display: none}");
   document.head.appendChild(styleEl);
+  UIBottomControls.style.marginBottom = '5px';
+  UILeftControls.style.padding = '0px 2px 2px';
 
   function goTo(nextEl) {
     resetSelect();
@@ -88,6 +92,10 @@
     // log(`iteration: ${key} = ${iterationState}`)
     console.log("iteration: ".concat(key, " = ").concat(iterationState));
 
+    if (key === 'bottom') {
+      openPanel();
+    }
+
     switch (iterationState) {
       case "default":
         switch (key) {
@@ -126,6 +134,7 @@
             break;
 
           case 'right':
+            openPanel();
             iterationState = 'setting-button-selected';
             goTo(UIYTSettingBtn);
             break;
@@ -142,11 +151,11 @@
             break;
 
           case 'ok':
+            openPanel();
             iterationState = 'open-setting';
-            UIYTSettingBtn.click();
-            Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(function (el) {
-              return el.remove();
-            });
+            UIYTSettingBtn.click(); // Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(el => el.remove());
+            // document.querySelector('.ytp-settings-menu').style.height = '51px';
+
             setTimeout(function () {
               changeSettingItem(0);
             }, 0);
@@ -154,6 +163,7 @@
 
           case 'left':
             iterationState = 'play-button';
+            openPanel();
             goTo(UIPlayBtn);
             break;
         }
@@ -163,6 +173,7 @@
       case 'open-setting':
         switch (key) {
           case 'ok':
+            openPanel();
             var isQuality = !!document.querySelector('.ytp-quality-menu');
             (_document$querySelect = document.querySelector(".ytp-menuitem.".concat(selectClass))) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.click();
             resetSelect();
@@ -179,10 +190,12 @@
             break;
 
           case 'top':
+            openPanel();
             changeSettingItem(-1);
             break;
 
           case 'bottom':
+            openPanel();
             changeSettingItem(1);
             break;
         }
@@ -226,20 +239,22 @@
   window.addEventListener('keydown', function (e) {
     if (!e.isTrusted) return;
     e.preventDefault();
-    e.stopPropagation();
-    iteration({
-      40: 'bottom',
-      39: 'right',
-      38: 'top',
-      37: 'left',
-      13: 'ok'
-    }[e.keyCode]); // iteration({
-    //     50: 'bottom',
-    //     54: 'right',
-    //     56: 'top',
-    //     52: 'left',
-    //     32: 'ok'
+    e.stopPropagation(); // iteration({
+    //     40: 'bottom',
+    //     39: 'right',
+    //     38: 'top',
+    //     37: 'left',
+    //     13: 'ok'
     // }[e.keyCode]);
+    // pla
+
+    iteration({
+      50: 'bottom',
+      54: 'right',
+      56: 'top',
+      52: 'left',
+      32: 'ok'
+    }[e.keyCode]); //pc
     // iteration({
     //     40: 'bottom',
     //     39: 'right',
