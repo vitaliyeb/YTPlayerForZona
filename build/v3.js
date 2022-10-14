@@ -247,22 +247,22 @@
   window.addEventListener('keydown', function (e) {
     if (!e.isTrusted) return;
     e.preventDefault();
-    e.stopPropagation(); // iteration({
-    //     40: 'bottom',
-    //     39: 'right',
-    //     38: 'top',
-    //     37: 'left',
-    //     13: 'ok'
-    // }[e.keyCode]);
-    // pla
-
+    e.stopPropagation();
     iteration({
-      50: 'bottom',
-      54: 'right',
-      56: 'top',
-      52: 'left',
-      32: 'ok'
-    }[e.keyCode]); //pc
+      40: 'bottom',
+      39: 'right',
+      38: 'top',
+      37: 'left',
+      13: 'ok'
+    }[e.keyCode]); // pla
+    // iteration({
+    //     50: 'bottom',
+    //     54: 'right',
+    //     56: 'top',
+    //     52: 'left',
+    //     32: 'ok'
+    // }[e.keyCode]);
+    //pc
     // iteration({
     //     40: 'bottom',
     //     39: 'right',
