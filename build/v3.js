@@ -20,6 +20,12 @@
   UILeftControls.style.padding = '0px 2px 2px';
   document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
 
+  window.onunload = function () {
+    localStorage.setItem('testlocals', 'end');
+  };
+
+  alert(localStorage.getItem('testlocals'));
+
   function goTo(nextEl) {
     resetSelect();
     nextEl.classList.add(selectClass);
