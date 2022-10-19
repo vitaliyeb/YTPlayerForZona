@@ -17,6 +17,7 @@
     let windCurrentTime = null;
     let windTimerId = null;
     let panelTimerID = null;
+    let isEnd = false;
 
     let iterationState = 'default';
     const selectClass = 'UISelect';
@@ -29,7 +30,7 @@
         .ytp-progress-bar > div {opacity: 0 !important;}
         .ytp-time-current { display: none;}
         #custom-current-time {color: #ddd;}
-        .ytp-progress-bar {background-color: rgba(255,255,255,.2);}
+        .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important;}
         #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}
         `;
     document.head.appendChild(styleEl);
@@ -44,10 +45,22 @@
     UICustomCurrentTime.textContent = '0:00';
     UICurrentTime.replaceWith(UICustomCurrentTime);
 
+    player.addEventListener('onStateChange', (state) => {
+        switch (state) {
+            case 1:
+                isEnd = false;
+                break;
+            case 0:
+                isEnd = true;
+                break;
+        }
+        console.log('state: ', state);
+    })
+
     setInterval(() => {
         if (windCurrentTime === null) {
             const currentTime = player.getCurrentTime();
-            setTime(currentTime);
+            setTime(isEnd ? player.getDuration() : currentTime);
         }
     }, 500);
 
@@ -58,6 +71,7 @@
         UICustomCurrentTime.textContent = convertSecond(sec);
 
     }
+
     function convertSecond(sec) {
         sec = Math.trunc(sec);
         let min = Math.floor(sec / 60);
@@ -116,14 +130,20 @@
     function wind(sec = 0) {
         player.pauseVideo();
         windNextAdditionalTime = sec;
-        const nextTime = windNextAdditionalTime + (windCurrentTime === null ? player.getCurrentTime() : windCurrentTime)
+        const nextTime = windNextAdditionalTime +
+            (windCurrentTime === null ?
+                isEnd ? player.getDuration() : player.getCurrentTime()
+                : windCurrentTime)
         windCurrentTime = Math.min(Math.max(0, nextTime), player.getDuration());
 
         clearTimeout(windTimerId);
         setTime(windCurrentTime);
+        isEnd = windCurrentTime >= player.getDuration();
         windTimerId = setTimeout(() => {
-            player.seekTo(windCurrentTime - 1, true);
-            player.playVideo();
+            player.seekTo(windCurrentTime, true);
+            if (!isEnd) {
+                player.playVideo();
+            }
             windNextAdditionalTime = 0;
             windCurrentTime = null;
         }, 700);

@@ -18,11 +18,12 @@
   var windCurrentTime = null;
   var windTimerId = null;
   var panelTimerID = null;
+  var isEnd = false;
   var iterationState = 'default';
   var selectClass = 'UISelect';
   var styleEl = document.createElement('style');
   styleEl.type = 'text/css';
-  styleEl.innerHTML = "\n        .".concat(selectClass, " { outline: solid !important; }\n        .ytp-panel-header- {display: none;}\n        .ytp-progress-bar > div {opacity: 0 !important;}\n        .ytp-time-current { display: none;}\n        #custom-current-time {color: #ddd;}\n        .ytp-progress-bar {background-color: rgba(255,255,255,.2);}\n        #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}\n        ");
+  styleEl.innerHTML = "\n        .".concat(selectClass, " { outline: solid !important; }\n        .ytp-panel-header- {display: none;}\n        .ytp-progress-bar > div {opacity: 0 !important;}\n        .ytp-time-current { display: none;}\n        #custom-current-time {color: #ddd;}\n        .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important;}\n        #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}\n        ");
   document.head.appendChild(styleEl);
   UIBottomControls.style.marginBottom = '5px';
   UILeftControls.style.padding = '0px 2px 2px';
@@ -32,10 +33,23 @@
   UIProgressBar.appendChild(UICustomProgressBar);
   UICustomCurrentTime.textContent = '0:00';
   UICurrentTime.replaceWith(UICustomCurrentTime);
+  player.addEventListener('onStateChange', function (state) {
+    switch (state) {
+      case 1:
+        isEnd = false;
+        break;
+
+      case 0:
+        isEnd = true;
+        break;
+    }
+
+    console.log('state: ', state);
+  });
   setInterval(function () {
     if (windCurrentTime === null) {
       var currentTime = player.getCurrentTime();
-      setTime(currentTime);
+      setTime(isEnd ? player.getDuration() : currentTime);
     }
   }, 500);
 
@@ -124,13 +138,18 @@
     var sec = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
     player.pauseVideo();
     windNextAdditionalTime = sec;
-    var nextTime = windNextAdditionalTime + (windCurrentTime === null ? player.getCurrentTime() : windCurrentTime);
+    var nextTime = windNextAdditionalTime + (windCurrentTime === null ? isEnd ? player.getDuration() : player.getCurrentTime() : windCurrentTime);
     windCurrentTime = Math.min(Math.max(0, nextTime), player.getDuration());
     clearTimeout(windTimerId);
     setTime(windCurrentTime);
+    isEnd = windCurrentTime >= player.getDuration();
     windTimerId = setTimeout(function () {
-      player.seekTo(windCurrentTime - 1, true);
-      player.playVideo();
+      player.seekTo(windCurrentTime, true);
+
+      if (!isEnd) {
+        player.playVideo();
+      }
+
       windNextAdditionalTime = 0;
       windCurrentTime = null;
     }, 700);
