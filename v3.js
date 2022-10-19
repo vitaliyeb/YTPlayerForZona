@@ -8,6 +8,8 @@
     const UISettingPopup = document.querySelector('.ytp-popup.ytp-settings-menu');
 
     const player = document.getElementById("movie_player");
+    let windValue = 0;
+    let windTimerId = null;
 
     let panelTimerID = null;
 
@@ -23,11 +25,6 @@
     UILeftControls.style.padding = '0px 2px 2px'
     document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
 
-    window.onunload = function() {
-        localStorage.setItem('testlocals', 'end');
-    };
-
-    alert(localStorage.getItem('testlocals'))
 
 
     function goTo(nextEl) {
@@ -58,12 +55,10 @@
         }
     }
 
-    function openPanel(isTimer) {
+    function openPanel() {
         window.clearTimeout(panelTimerID);
         player.classList.remove('ytp-autohide');
-        if (true) {
-            panelTimerID = setTimeout(closePanel, 3000);
-        }
+        panelTimerID = setTimeout(closePanel, 3000);
     }
 
     function resetSelect() {
@@ -81,24 +76,31 @@
     }
 
     function wind(sec = 0) {
-        openPanel(true);
-        player.seekTo(player.getCurrentTime() + sec, true);
+        windValue = sec;
+        const nextTime = windValue + player.getCurrentTime();
+        clearTimeout(windTimerId);
+        windTimerId = setTimeout(() => {
+            windValue = 0;
+            windTimerId = null;
+        }, 700);
+        player.seekTo(nextTime, true);
+        openPanel();
     }
 
     function iteration(key) {
         // log(`iteration: ${key} = ${iterationState}`)
         console.log(`iteration: ${key} = ${iterationState}`);
-        if(key === 'bottom') {
+        if (key === 'bottom') {
             openPanel()
         }
         switch (iterationState) {
             case "default":
                 switch (key) {
                     case 'right':
-                        wind(5);
+                        wind(windValue <= 0 ? 15 : Math.min(windValue * 2, 120));
                         break;
                     case 'left':
-                        wind(-5);
+                        wind(windValue >= 0 ? -15 : Math.max(-Math.abs(windValue * 2), -120));
                         break;
                     case 'ok':
                         openPanel();
@@ -139,8 +141,6 @@
                         openPanel();
                         iterationState = 'open-setting';
                         UIYTSettingBtn.click();
-                        // Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(el => el.remove());
-                        // document.querySelector('.ytp-settings-menu').style.height = '51px';
                         setTimeout(() => {
                             changeSettingItem(0);
                         }, 0)
@@ -209,21 +209,21 @@
         if (!e.isTrusted) return;
         e.preventDefault();
         e.stopPropagation();
-        iteration({
-            40: 'bottom',
-            39: 'right',
-            38: 'top',
-            37: 'left',
-            13: 'ok'
-        }[e.keyCode]);
-        // pla
         // iteration({
-        //     50: 'bottom',
-        //     54: 'right',
-        //     56: 'top',
-        //     52: 'left',
-        //     32: 'ok'
+        //     40: 'bottom',
+        //     39: 'right',
+        //     38: 'top',
+        //     37: 'left',
+        //     13: 'ok'
         // }[e.keyCode]);
+        // pla
+        iteration({
+            50: 'bottom',
+            54: 'right',
+            56: 'top',
+            52: 'left',
+            32: 'ok'
+        }[e.keyCode]);
         //pc
         // iteration({
         //     40: 'bottom',
