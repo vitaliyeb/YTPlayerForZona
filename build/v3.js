@@ -9,6 +9,8 @@
   var UIPlayBtn = document.querySelector('.ytp-play-button');
   var UISettingPopup = document.querySelector('.ytp-popup.ytp-settings-menu');
   var player = document.getElementById("movie_player");
+  var windValue = 0;
+  var windTimerId = null;
   var panelTimerID = null;
   var iterationState = 'default';
   var selectClass = 'UISelect';
@@ -19,12 +21,6 @@
   UIBottomControls.style.marginBottom = '5px';
   UILeftControls.style.padding = '0px 2px 2px';
   document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
-
-  window.onunload = function () {
-    localStorage.setItem('testlocals', 'end');
-  };
-
-  alert(localStorage.getItem('testlocals'));
 
   function goTo(nextEl) {
     resetSelect();
@@ -68,13 +64,10 @@
     }
   }
 
-  function openPanel(isTimer) {
+  function openPanel() {
     window.clearTimeout(panelTimerID);
     player.classList.remove('ytp-autohide');
-
-    if (true) {
-      panelTimerID = setTimeout(closePanel, 3000);
-    }
+    panelTimerID = setTimeout(closePanel, 3000);
   }
 
   function resetSelect() {
@@ -96,8 +89,15 @@
 
   function wind() {
     var sec = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    openPanel(true);
-    player.seekTo(player.getCurrentTime() + sec, true);
+    windValue = sec;
+    var nextTime = windValue + player.getCurrentTime();
+    clearTimeout(windTimerId);
+    windTimerId = setTimeout(function () {
+      windValue = 0;
+      windTimerId = null;
+    }, 700);
+    player.seekTo(nextTime, true);
+    openPanel();
   }
 
   function iteration(key) {
@@ -114,11 +114,11 @@
       case "default":
         switch (key) {
           case 'right':
-            wind(5);
+            wind(windValue <= 0 ? 15 : Math.min(windValue * 2, 120));
             break;
 
           case 'left':
-            wind(-5);
+            wind(windValue >= 0 ? -15 : Math.max(-Math.abs(windValue * 2), -120));
             break;
 
           case 'ok':
@@ -167,9 +167,7 @@
           case 'ok':
             openPanel();
             iterationState = 'open-setting';
-            UIYTSettingBtn.click(); // Array.from(document.querySelectorAll('.ytp-menuitem')).slice(0, -1).forEach(el => el.remove());
-            // document.querySelector('.ytp-settings-menu').style.height = '51px';
-
+            UIYTSettingBtn.click();
             setTimeout(function () {
               changeSettingItem(0);
             }, 0);
@@ -253,22 +251,22 @@
   window.addEventListener('keydown', function (e) {
     if (!e.isTrusted) return;
     e.preventDefault();
-    e.stopPropagation();
-    iteration({
-      40: 'bottom',
-      39: 'right',
-      38: 'top',
-      37: 'left',
-      13: 'ok'
-    }[e.keyCode]); // pla
-    // iteration({
-    //     50: 'bottom',
-    //     54: 'right',
-    //     56: 'top',
-    //     52: 'left',
-    //     32: 'ok'
+    e.stopPropagation(); // iteration({
+    //     40: 'bottom',
+    //     39: 'right',
+    //     38: 'top',
+    //     37: 'left',
+    //     13: 'ok'
     // }[e.keyCode]);
-    //pc
+    // pla
+
+    iteration({
+      50: 'bottom',
+      54: 'right',
+      56: 'top',
+      52: 'left',
+      32: 'ok'
+    }[e.keyCode]); //pc
     // iteration({
     //     40: 'bottom',
     //     39: 'right',
