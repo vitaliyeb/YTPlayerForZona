@@ -8,19 +8,52 @@
   var UIYTSettingBtn = document.querySelector('.ytp-settings-button');
   var UIPlayBtn = document.querySelector('.ytp-play-button');
   var UISettingPopup = document.querySelector('.ytp-popup.ytp-settings-menu');
+  var UIProgressBar = document.querySelector('.ytp-progress-bar');
+  var UICurrentTime = document.querySelector('.ytp-time-current');
+  var UICustomCurrentTime = document.createElement('span');
+  var UICustomProgressBar = document.createElement('p');
   var player = document.getElementById("movie_player");
-  var windValue = 0;
+  var loopId = null;
+  var windNextAdditionalTime = 0;
+  var windCurrentTime = null;
   var windTimerId = null;
   var panelTimerID = null;
   var iterationState = 'default';
   var selectClass = 'UISelect';
   var styleEl = document.createElement('style');
   styleEl.type = 'text/css';
-  styleEl.innerHTML = ".".concat(selectClass, " { outline: solid !important; }; .ytp-panel-header- {display: none}");
+  styleEl.innerHTML = "\n        .".concat(selectClass, " { outline: solid !important; }\n        .ytp-panel-header- {display: none;}\n        .ytp-progress-bar > div {opacity: 0 !important;}\n        .ytp-time-current { display: none;}\n        #custom-current-time {color: #ddd;}\n        .ytp-progress-bar {background-color: rgba(255,255,255,.2);}\n        #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}\n        ");
   document.head.appendChild(styleEl);
   UIBottomControls.style.marginBottom = '5px';
   UILeftControls.style.padding = '0px 2px 2px';
   document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
+  UICustomProgressBar.id = 'custom-progress-bar-wrapper';
+  UICustomCurrentTime.id = 'custom-current-time';
+  UIProgressBar.appendChild(UICustomProgressBar);
+  UICustomCurrentTime.textContent = '0:00';
+  UICurrentTime.replaceWith(UICustomCurrentTime);
+  setInterval(function () {
+    if (windCurrentTime === null) {
+      var currentTime = player.getCurrentTime();
+      setTime(currentTime);
+    }
+  }, 500);
+
+  function setTime(sec) {
+    var maxSec = player.getDuration();
+    var division = sec / (maxSec / 100);
+    UICustomProgressBar.style.width = "".concat(division, "%");
+    UICustomCurrentTime.textContent = convertSecond(sec);
+  }
+
+  function convertSecond(sec) {
+    sec = Math.trunc(sec);
+    var min = Math.floor(sec / 60);
+    var hour = Math.floor(min / 60);
+    return "".concat(hour ? hour % 24 + ':' : "").concat(('0' + min % 60).slice(-2), ":").concat(('0' + sec % 60).slice(-2));
+  }
+
+  ;
 
   function goTo(nextEl) {
     resetSelect();
@@ -67,7 +100,7 @@
   function openPanel() {
     window.clearTimeout(panelTimerID);
     player.classList.remove('ytp-autohide');
-    panelTimerID = setTimeout(closePanel, 3000);
+    panelTimerID = setTimeout(closePanel, 4000);
   }
 
   function resetSelect() {
@@ -89,14 +122,18 @@
 
   function wind() {
     var sec = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    windValue = sec;
-    var nextTime = windValue + player.getCurrentTime();
+    player.pauseVideo();
+    windNextAdditionalTime = sec;
+    var nextTime = windNextAdditionalTime + (windCurrentTime === null ? player.getCurrentTime() : windCurrentTime);
+    windCurrentTime = Math.min(Math.max(0, nextTime), player.getDuration());
     clearTimeout(windTimerId);
+    setTime(windCurrentTime);
     windTimerId = setTimeout(function () {
-      windValue = 0;
-      windTimerId = null;
+      player.seekTo(windCurrentTime - 1, true);
+      player.playVideo();
+      windNextAdditionalTime = 0;
+      windCurrentTime = null;
     }, 700);
-    player.seekTo(nextTime, true);
     openPanel();
   }
 
@@ -114,11 +151,11 @@
       case "default":
         switch (key) {
           case 'right':
-            wind(windValue <= 0 ? 15 : Math.min(windValue * 2, 120));
+            wind(windNextAdditionalTime <= 0 ? 15 : Math.min(windNextAdditionalTime * 2, 120));
             break;
 
           case 'left':
-            wind(windValue >= 0 ? -15 : Math.max(-Math.abs(windValue * 2), -120));
+            wind(windNextAdditionalTime >= 0 ? -15 : Math.max(-Math.abs(windNextAdditionalTime * 2), -120));
             break;
 
           case 'ok':

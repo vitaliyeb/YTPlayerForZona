@@ -6,11 +6,16 @@
     const UIYTSettingBtn = document.querySelector('.ytp-settings-button');
     const UIPlayBtn = document.querySelector('.ytp-play-button');
     const UISettingPopup = document.querySelector('.ytp-popup.ytp-settings-menu');
+    const UIProgressBar = document.querySelector('.ytp-progress-bar');
+    const UICurrentTime = document.querySelector('.ytp-time-current');
+    const UICustomCurrentTime = document.createElement('span');
+    const UICustomProgressBar = document.createElement('p');
 
     const player = document.getElementById("movie_player");
-    let windValue = 0;
+    let loopId = null;
+    let windNextAdditionalTime = 0;
+    let windCurrentTime = null;
     let windTimerId = null;
-
     let panelTimerID = null;
 
     let iterationState = 'default';
@@ -18,14 +23,47 @@
 
     const styleEl = document.createElement('style');
     styleEl.type = 'text/css';
-    styleEl.innerHTML = `.${selectClass} { outline: solid !important; }; .ytp-panel-header- {display: none}`;
+    styleEl.innerHTML = `
+        .${selectClass} { outline: solid !important; }
+        .ytp-panel-header- {display: none;}
+        .ytp-progress-bar > div {opacity: 0 !important;}
+        .ytp-time-current { display: none;}
+        #custom-current-time {color: #ddd;}
+        .ytp-progress-bar {background-color: rgba(255,255,255,.2);}
+        #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}
+        `;
     document.head.appendChild(styleEl);
 
     UIBottomControls.style.marginBottom = '5px';
-    UILeftControls.style.padding = '0px 2px 2px'
+    UILeftControls.style.padding = '0px 2px 2px';
     document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
 
+    UICustomProgressBar.id = 'custom-progress-bar-wrapper';
+    UICustomCurrentTime.id = 'custom-current-time';
+    UIProgressBar.appendChild(UICustomProgressBar);
+    UICustomCurrentTime.textContent = '0:00';
+    UICurrentTime.replaceWith(UICustomCurrentTime);
 
+    setInterval(() => {
+        if (windCurrentTime === null) {
+            const currentTime = player.getCurrentTime();
+            setTime(currentTime);
+        }
+    }, 500);
+
+    function setTime(sec) {
+        const maxSec = player.getDuration();
+        const division = sec / (maxSec / 100);
+        UICustomProgressBar.style.width = `${division}%`;
+        UICustomCurrentTime.textContent = convertSecond(sec);
+
+    }
+    function convertSecond(sec) {
+        sec = Math.trunc(sec);
+        let min = Math.floor(sec / 60);
+        let hour = Math.floor(min / 60);
+        return `${hour ? (hour % 24 + ':') : ""}${('0' + min % 60).slice(-2)}:${('0' + sec % 60).slice(-2)}`
+    };
 
     function goTo(nextEl) {
         resetSelect();
@@ -58,7 +96,7 @@
     function openPanel() {
         window.clearTimeout(panelTimerID);
         player.classList.remove('ytp-autohide');
-        panelTimerID = setTimeout(closePanel, 3000);
+        panelTimerID = setTimeout(closePanel, 4000);
     }
 
     function resetSelect() {
@@ -76,14 +114,19 @@
     }
 
     function wind(sec = 0) {
-        windValue = sec;
-        const nextTime = windValue + player.getCurrentTime();
+        player.pauseVideo();
+        windNextAdditionalTime = sec;
+        const nextTime = windNextAdditionalTime + (windCurrentTime === null ? player.getCurrentTime() : windCurrentTime)
+        windCurrentTime = Math.min(Math.max(0, nextTime), player.getDuration());
+
         clearTimeout(windTimerId);
+        setTime(windCurrentTime);
         windTimerId = setTimeout(() => {
-            windValue = 0;
-            windTimerId = null;
+            player.seekTo(windCurrentTime - 1, true);
+            player.playVideo();
+            windNextAdditionalTime = 0;
+            windCurrentTime = null;
         }, 700);
-        player.seekTo(nextTime, true);
         openPanel();
     }
 
@@ -97,10 +140,10 @@
             case "default":
                 switch (key) {
                     case 'right':
-                        wind(windValue <= 0 ? 15 : Math.min(windValue * 2, 120));
+                        wind(windNextAdditionalTime <= 0 ? 15 : Math.min(windNextAdditionalTime * 2, 120));
                         break;
                     case 'left':
-                        wind(windValue >= 0 ? -15 : Math.max(-Math.abs(windValue * 2), -120));
+                        wind(windNextAdditionalTime >= 0 ? -15 : Math.max(-Math.abs(windNextAdditionalTime * 2), -120));
                         break;
                     case 'ok':
                         openPanel();
