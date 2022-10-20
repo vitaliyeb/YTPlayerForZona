@@ -320,22 +320,22 @@
     //     13: 'ok'
     // }[e.keyCode]);
     // pla
-
-    iteration({
-      50: 'bottom',
-      54: 'right',
-      56: 'top',
-      52: 'left',
-      32: 'ok'
-    }[e.keyCode]); //pc
     // iteration({
-    //     40: 'bottom',
-    //     39: 'right',
-    //     38: 'top',
-    //     37: 'left',
+    //     50: 'bottom',
+    //     54: 'right',
+    //     56: 'top',
+    //     52: 'left',
     //     32: 'ok'
     // }[e.keyCode]);
+    //pc
 
+    iteration({
+      40: 'bottom',
+      39: 'right',
+      38: 'top',
+      37: 'left',
+      32: 'ok'
+    }[e.keyCode]);
     log("".concat(e.key, ": ").concat(e.keyCode, ", ").concat(iterationState));
   }, {
     capture: true
