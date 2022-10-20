@@ -23,7 +23,7 @@
   var selectClass = 'UISelect';
   var styleEl = document.createElement('style');
   styleEl.type = 'text/css';
-  styleEl.innerHTML = "\n        .".concat(selectClass, " { outline: solid !important; }\n        .ytp-panel-header- {display: none;}\n        .ytp-progress-bar > div {opacity: 0 !important;}\n        .ytp-time-current { display: none;}\n        #custom-current-time {color: #ddd;}\n        .ytp-chrome-bottom {height: 39px !important; margin-bottom: 10px !important;}\n        .ytp-left-controls {padding: 2px !important;}\n        .ytp-progress-bar-container {bottom: 39px !important;}\n        .ytp-progress-bar-container, .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important; overflow: hidden;}\n        #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}\n        ");
+  styleEl.innerHTML = "\n        .".concat(selectClass, " { outline: solid !important; }\n        .ytp-panel-header- {display: none;}\n        .ytp-progress-bar > div {opacity: 0 !important;}\n        .ytp-time-current { display: none;}\n        #custom-current-time {color: #ddd;}\n        .ytp-chrome-bottom {height: 39px !important; margin-bottom: 10px !important;}\n        .ytp-left-controls {padding: 2px !important; height: 35px !important;}\n        .ytp-play-button {width: 35px !important}\n        .ytp-progress-bar-container {bottom: 39px !important;}\n        .ytp-progress-bar-container, .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important; overflow: hidden;}\n        #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}\n        ");
   document.head.appendChild(styleEl);
   UIBottomControls.style.marginBottom = '5px';
   UILeftControls.style.padding = '0px 2px 2px';
@@ -34,6 +34,8 @@
   UICustomCurrentTime.textContent = '0:00';
   UICurrentTime.replaceWith(UICustomCurrentTime);
   player.addEventListener('onStateChange', function (state) {
+    var _JSInterface;
+
     switch (state) {
       case 1:
         isEnd = false;
@@ -41,6 +43,11 @@
 
       case 0:
         isEnd = true;
+
+        if (typeof ((_JSInterface = JSInterface) === null || _JSInterface === void 0 ? void 0 : _JSInterface.playbackEnd) === "function") {
+          JSInterface.playbackEnd();
+        }
+
         break;
     } // console.log('state: ', state);
 
@@ -306,22 +313,22 @@
   window.addEventListener('keydown', function (e) {
     if (!e.isTrusted) return;
     e.preventDefault();
-    e.stopPropagation();
-    iteration({
-      40: 'bottom',
-      39: 'right',
-      38: 'top',
-      37: 'left',
-      13: 'ok'
-    }[e.keyCode]); // pla
-    // iteration({
-    //     50: 'bottom',
-    //     54: 'right',
-    //     56: 'top',
-    //     52: 'left',
-    //     32: 'ok'
+    e.stopPropagation(); // iteration({
+    //     40: 'bottom',
+    //     39: 'right',
+    //     38: 'top',
+    //     37: 'left',
+    //     13: 'ok'
     // }[e.keyCode]);
-    //pc
+    // pla
+
+    iteration({
+      50: 'bottom',
+      54: 'right',
+      56: 'top',
+      52: 'left',
+      32: 'ok'
+    }[e.keyCode]); //pc
     // iteration({
     //     40: 'bottom',
     //     39: 'right',
