@@ -278,13 +278,13 @@
         if (!e.isTrusted) return;
         e.preventDefault();
         e.stopPropagation();
-        // iteration({
-        //     40: 'bottom',
-        //     39: 'right',
-        //     38: 'top',
-        //     37: 'left',
-        //     13: 'ok'
-        // }[e.keyCode]);
+        iteration({
+            40: 'bottom',
+            39: 'right',
+            38: 'top',
+            37: 'left',
+            13: 'ok'
+        }[e.keyCode]);
         // pla
         // iteration({
         //     50: 'bottom',
@@ -294,13 +294,13 @@
         //     32: 'ok'
         // }[e.keyCode]);
         //pc
-        iteration({
-            40: 'bottom',
-            39: 'right',
-            38: 'top',
-            37: 'left',
-            32: 'ok'
-        }[e.keyCode]);
+        // iteration({
+        //     40: 'bottom',
+        //     39: 'right',
+        //     38: 'top',
+        //     37: 'left',
+        //     32: 'ok'
+        // }[e.keyCode]);
         log(`${e.key}: ${e.keyCode}, ${iterationState}`);
     }, {capture: true})
 
