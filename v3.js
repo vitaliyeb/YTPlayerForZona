@@ -30,7 +30,10 @@
         .ytp-progress-bar > div {opacity: 0 !important;}
         .ytp-time-current { display: none;}
         #custom-current-time {color: #ddd;}
-        .ytp-progress-bar-container, .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 2px !important; overflow: hidden;}
+        .ytp-chrome-bottom {height: 39px !important;}
+        .ytp-left-controls {padding: 2px !important;}
+        .ytp-progress-bar-container {bottom: 39px !important;}
+        .ytp-progress-bar-container, .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important; overflow: hidden;}
         #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}
         `;
     document.head.appendChild(styleEl);
