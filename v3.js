@@ -30,7 +30,7 @@
         .ytp-progress-bar > div {opacity: 0 !important;}
         .ytp-time-current { display: none;}
         #custom-current-time {color: #ddd;}
-        .ytp-chrome-bottom {height: 39px !important;}
+        .ytp-chrome-bottom {height: 39px !important; margin-bottom: 10px !important;}
         .ytp-left-controls {padding: 2px !important;}
         .ytp-progress-bar-container {bottom: 39px !important;}
         .ytp-progress-bar-container, .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important; overflow: hidden;}
@@ -57,7 +57,7 @@
                 isEnd = true;
                 break;
         }
-        console.log('state: ', state);
+        // console.log('state: ', state);
     })
 
     setInterval(() => {
@@ -275,21 +275,21 @@
         if (!e.isTrusted) return;
         e.preventDefault();
         e.stopPropagation();
-        // iteration({
-        //     40: 'bottom',
-        //     39: 'right',
-        //     38: 'top',
-        //     37: 'left',
-        //     13: 'ok'
-        // }[e.keyCode]);
-        // pla
         iteration({
-            50: 'bottom',
-            54: 'right',
-            56: 'top',
-            52: 'left',
-            32: 'ok'
+            40: 'bottom',
+            39: 'right',
+            38: 'top',
+            37: 'left',
+            13: 'ok'
         }[e.keyCode]);
+        // pla
+        // iteration({
+        //     50: 'bottom',
+        //     54: 'right',
+        //     56: 'top',
+        //     52: 'left',
+        //     32: 'ok'
+        // }[e.keyCode]);
         //pc
         // iteration({
         //     40: 'bottom',
