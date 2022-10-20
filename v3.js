@@ -30,10 +30,9 @@
         .ytp-progress-bar > div {opacity: 0 !important;}
         .ytp-time-current { display: none;}
         #custom-current-time {color: #ddd;}
-        .ytp-chrome-bottom {height: 39px !important; margin-bottom: 10px !important;}
-        .ytp-left-controls {padding: 2px !important; height: 35px !important;}
-        .ytp-play-button {width: 35px !important}
-        .ytp-progress-bar-container {bottom: 39px !important;}
+        .ytp-chrome-bottom {height: 50px !important; margin-bottom: 10px !important;}
+        .ytp-left-controls {padding: 2px !important; height: 35px !important; overflow: visible !important;}
+        .ytp-progress-bar-container {bottom: auto !important; top: -5px !important;}
         .ytp-progress-bar-container, .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important; overflow: hidden;}
         #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}
         `;
@@ -117,7 +116,7 @@
     function openPanel() {
         window.clearTimeout(panelTimerID);
         player.classList.remove('ytp-autohide');
-        panelTimerID = setTimeout(closePanel, 4000);
+        // panelTimerID = setTimeout(closePanel, 4000);
     }
 
     function resetSelect() {
