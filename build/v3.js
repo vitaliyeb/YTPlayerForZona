@@ -19,6 +19,7 @@
   var windTimerId = null;
   var panelTimerID = null;
   var isEnd = false;
+  var isEmbedErr = false;
   var iterationState = 'default';
   var selectClass = 'UISelect';
   var styleEl = document.createElement('style');
@@ -33,8 +34,15 @@
   UIProgressBar.appendChild(UICustomProgressBar);
   UICustomCurrentTime.textContent = '0:00';
   UICurrentTime.replaceWith(UICustomCurrentTime);
-  player.addEventListener('onStateChange', function (state) {
+  player.addEventListener('onError', function (state) {
     var _JSInterface;
+
+    if (typeof ((_JSInterface = JSInterface) === null || _JSInterface === void 0 ? void 0 : _JSInterface.playbackError) === "function") {
+      JSInterface.playbackError(state);
+    }
+  });
+  player.addEventListener('onStateChange', function (state) {
+    var _JSInterface2;
 
     switch (state) {
       case 1:
@@ -44,7 +52,7 @@
       case 0:
         isEnd = true;
 
-        if (typeof ((_JSInterface = JSInterface) === null || _JSInterface === void 0 ? void 0 : _JSInterface.playbackEnd) === "function") {
+        if (typeof ((_JSInterface2 = JSInterface) === null || _JSInterface2 === void 0 ? void 0 : _JSInterface2.playbackEnd) === "function") {
           JSInterface.playbackEnd();
         }
 
@@ -53,6 +61,18 @@
 
   });
   setInterval(function () {
+    if (!isEmbedErr) {
+      if (player.classList.contains('ytp-embed-error')) {
+        var _JSInterface3;
+
+        if (typeof ((_JSInterface3 = JSInterface) === null || _JSInterface3 === void 0 ? void 0 : _JSInterface3.playbackError) === "function") {
+          JSInterface.playbackError(100);
+        }
+
+        isEmbedErr = true;
+      }
+    }
+
     if (windCurrentTime === null) {
       var currentTime = player.getCurrentTime();
       setTime(isEnd ? player.getDuration() : currentTime);

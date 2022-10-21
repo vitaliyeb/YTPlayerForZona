@@ -18,6 +18,7 @@
     let windTimerId = null;
     let panelTimerID = null;
     let isEnd = false;
+    let isEmbedErr = false;
 
     let iterationState = 'default';
     const selectClass = 'UISelect';
@@ -48,6 +49,11 @@
     UICustomCurrentTime.textContent = '0:00';
     UICurrentTime.replaceWith(UICustomCurrentTime);
 
+    player.addEventListener('onError', (state) => {
+        if(typeof JSInterface?.playbackError === "function") {
+            JSInterface.playbackError(state)
+        }
+    })
     player.addEventListener('onStateChange', (state) => {
         switch (state) {
             case 1:
@@ -64,6 +70,14 @@
     })
 
     setInterval(() => {
+        if (!isEmbedErr) {
+            if (player.classList.contains('ytp-embed-error')) {
+                if(typeof JSInterface?.playbackError === "function") {
+                    JSInterface.playbackError(100)
+                }
+                isEmbedErr = true;
+            }
+        }
         if (windCurrentTime === null) {
             const currentTime = player.getCurrentTime();
             setTime(isEnd ? player.getDuration() : currentTime);
