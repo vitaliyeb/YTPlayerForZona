@@ -1,4 +1,5 @@
-(function () {
+window.addEventListener('DOMContentLoaded', function () {
+    alert('DOMContentLoaded !!!');
     const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
     const UIVideo = document.querySelector('video');
     const UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -50,7 +51,7 @@
     UICurrentTime.replaceWith(UICustomCurrentTime);
 
     player.addEventListener('onError', (state) => {
-        if(typeof JSInterface?.playbackError === "function") {
+        if (typeof JSInterface?.playbackError === "function") {
             JSInterface.playbackError(state)
         }
     })
@@ -61,7 +62,7 @@
                 break;
             case 0:
                 isEnd = true;
-                if(typeof JSInterface?.playbackEnd === "function") {
+                if (typeof JSInterface?.playbackEnd === "function") {
                     JSInterface.playbackEnd()
                 }
                 break;
@@ -72,7 +73,7 @@
     setInterval(() => {
         if (!isEmbedErr) {
             if (player.classList.contains('ytp-embed-error')) {
-                if(typeof JSInterface?.playbackError === "function") {
+                if (typeof JSInterface?.playbackError === "function") {
                     JSInterface.playbackError(100)
                 }
                 isEmbedErr = true;
@@ -322,4 +323,4 @@
     removeItems();
     log('play');
 
-})()
+});

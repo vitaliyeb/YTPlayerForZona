@@ -1,6 +1,7 @@
 "use strict";
 
-(function () {
+window.addEventListener('DOMContentLoaded', function () {
+  alert('DOMContentLoaded !!!');
   var UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
   var UIVideo = document.querySelector('video');
   var UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -363,4 +364,4 @@
   document.querySelector('video').click();
   removeItems();
   log('play');
-})();
+});
