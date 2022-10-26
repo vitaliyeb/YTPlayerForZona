@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', async function () {
     }
 
    try {
-       alert('two  DOMContentLoaded !!!', navigator.userAgent);
+       // alert('two  DOMContentLoaded !!!', navigator.userAgent);
 
        await waitForElBySelector('#movie_player');
 
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', async function () {
        let isEnd = false;
        let isEmbedErr = false;
 
-       alert('player:', player?.toString());
+       // alert('player:', player?.toString());
 
        let iterationState = 'default';
        const selectClass = 'UISelect';
@@ -284,6 +284,7 @@ window.addEventListener('DOMContentLoaded', async function () {
        }
 
        function log(str) {
+           return;
            let wrapper = document.getElementById('log-wrapper');
            if (!wrapper) {
                wrapper = document.createElement('div');

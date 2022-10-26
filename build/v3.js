@@ -266,6 +266,7 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           };
 
           log = function log(str) {
+            return;
             var wrapper = document.getElementById('log-wrapper');
 
             if (!wrapper) {
@@ -296,11 +297,10 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
             });
           };
 
-          alert('two  DOMContentLoaded !!!', navigator.userAgent);
-          _context2.next = 18;
+          _context2.next = 17;
           return waitForElBySelector('#movie_player');
 
-        case 18:
+        case 17:
           UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
           UIVideo = document.querySelector('video');
           UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -320,8 +320,8 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           windTimerId = null;
           panelTimerID = null;
           isEnd = false;
-          isEmbedErr = false;
-          alert('player:', player === null || player === void 0 ? void 0 : player.toString());
+          isEmbedErr = false; // alert('player:', player?.toString());
+
           iterationState = 'default';
           selectClass = 'UISelect';
           styleEl = document.createElement('style');
@@ -418,18 +418,18 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           document.querySelector('video').click();
           removeItems();
           log('play');
-          _context2.next = 67;
+          _context2.next = 65;
           break;
 
-        case 64:
-          _context2.prev = 64;
+        case 62:
+          _context2.prev = 62;
           _context2.t0 = _context2["catch"](2);
           console.log(_context2.t0.toString());
 
-        case 67:
+        case 65:
         case "end":
           return _context2.stop();
       }
     }
-  }, _callee2, null, [[2, 64]]);
+  }, _callee2, null, [[2, 62]]);
 })));
