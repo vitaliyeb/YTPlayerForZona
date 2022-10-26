@@ -11,7 +11,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 alert('script work!!!');
 
 _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-  var waitForElBySelector, _waitForElBySelector, setTime, convertSecond, goTo, togglePlayStatus, changeSettingItem, openPanel, resetSelect, closePanel, wind, iteration, log, removeItems, UIBottomPanel, UIVideo, UIBottomControls, UILeftControls, UIYTSettingBtn, UIPlayBtn, UISettingPopup, UIProgressBar, UICurrentTime, UICustomCurrentTime, UICustomProgressBar, UIPauseOverlay, player, loopId, windNextAdditionalTime, windCurrentTime, windTimerId, panelTimerID, isEnd, isEmbedErr, iterationState, selectClass, styleEl;
+  var log, waitForElBySelector, _waitForElBySelector, setTime, convertSecond, goTo, togglePlayStatus, changeSettingItem, openPanel, resetSelect, closePanel, wind, iteration, removeItems, UIBottomPanel, UIVideo, UIBottomControls, UILeftControls, UIYTSettingBtn, UIPlayBtn, UISettingPopup, UIProgressBar, UICurrentTime, UICustomCurrentTime, UICustomProgressBar, UIPauseOverlay, player, loopId, windNextAdditionalTime, windCurrentTime, windTimerId, panelTimerID, isEnd, isEmbedErr, iterationState, selectClass, styleEl;
 
   return _regeneratorRuntime().wrap(function _callee2$(_context2) {
     while (1) {
@@ -19,23 +19,25 @@ _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         case 0:
           _waitForElBySelector = function _waitForElBySelector3() {
             _waitForElBySelector = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(selector) {
-              var timerId;
+              var timerId, sec;
               return _regeneratorRuntime().wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
                       timerId = null;
-                      _context.next = 3;
+                      sec = 0;
+                      _context.next = 4;
                       return new Promise(function (resolve, rej) {
                         timerId = setInterval(function () {
                           if (document.querySelector(selector)) {
+                            log("".concat(selector, " not found: ").concat(++sec));
                             clearInterval(timerId);
                             resolve();
                           }
                         }, 100);
                       });
 
-                    case 3:
+                    case 4:
                     case "end":
                       return _context.stop();
                   }
@@ -49,7 +51,27 @@ _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
             return _waitForElBySelector.apply(this, arguments);
           };
 
-          _context2.prev = 2;
+          log = function _log(str) {
+            return;
+            var wrapper = document.getElementById('log-wrapper');
+
+            if (!wrapper) {
+              wrapper = document.createElement('div');
+              wrapper.id = 'log-wrapper';
+              wrapper.style.cssText = 'position:fixed;z-index:100;width: 300px; display:grid;gap: 10px; top: 0; left: 0';
+              document.body.appendChild(wrapper);
+            }
+
+            var div = document.createElement('div');
+            div.style.cssText = 'border: 1px solid red; padding: 2px 10px; color: red; background: #fff';
+            div.textContent = str;
+            wrapper.appendChild(div);
+            setTimeout(function () {
+              return div.remove();
+            }, 3000);
+          };
+
+          _context2.prev = 3;
 
           setTime = function setTime(sec) {
             var maxSec = player.getDuration();
@@ -267,26 +289,6 @@ _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
             }
           };
 
-          log = function log(str) {
-            return;
-            var wrapper = document.getElementById('log-wrapper');
-
-            if (!wrapper) {
-              wrapper = document.createElement('div');
-              wrapper.id = 'log-wrapper';
-              wrapper.style.cssText = 'position:fixed;z-index:100;width: 300px; display:grid;gap: 10px; top: 0; left: 0';
-              document.body.appendChild(wrapper);
-            }
-
-            var div = document.createElement('div');
-            div.style.cssText = 'border: 1px solid red; padding: 2px 10px; color: red; background: #fff';
-            div.textContent = str;
-            wrapper.appendChild(div);
-            setTimeout(function () {
-              return div.remove();
-            }, 3000);
-          };
-
           removeItems = function removeItems() {
             var fullScreenBtn = document.querySelector('.ytp-fullscreen-button');
             var topBtns = document.querySelector('.ytp-chrome-top-buttons');
@@ -427,7 +429,7 @@ _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
 
         case 66:
           _context2.prev = 66;
-          _context2.t0 = _context2["catch"](2);
+          _context2.t0 = _context2["catch"](3);
           alert("err: ".concat(_context2.t0.toString()));
 
         case 69:
@@ -435,5 +437,5 @@ _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
           return _context2.stop();
       }
     }
-  }, _callee2, null, [[2, 66]]);
+  }, _callee2, null, [[3, 66]]);
 }))();
