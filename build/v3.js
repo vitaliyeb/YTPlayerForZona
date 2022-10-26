@@ -8,47 +8,150 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-  var UIBottomPanel, UIVideo, UIBottomControls, UILeftControls, UIYTSettingBtn, UIPlayBtn, UISettingPopup, UIProgressBar, UICurrentTime, UICustomCurrentTime, UICustomProgressBar, player, loopId, windNextAdditionalTime, windCurrentTime, windTimerId, panelTimerID, isEnd, isEmbedErr, iterationState, selectClass, styleEl, setTime, convertSecond, goTo, togglePlayStatus, changeSettingItem, openPanel, resetSelect, closePanel, wind, iteration, log, removeItems;
-  return _regeneratorRuntime().wrap(function _callee$(_context) {
+window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+  var waitForElBySelector, _waitForElBySelector, setTime, convertSecond, goTo, togglePlayStatus, changeSettingItem, openPanel, resetSelect, closePanel, wind, iteration, log, removeItems, UIBottomPanel, UIVideo, UIBottomControls, UILeftControls, UIYTSettingBtn, UIPlayBtn, UISettingPopup, UIProgressBar, UICurrentTime, UICustomCurrentTime, UICustomProgressBar, UIPauseOverlay, player, loopId, windNextAdditionalTime, windCurrentTime, windTimerId, panelTimerID, isEnd, isEmbedErr, iterationState, selectClass, styleEl;
+
+  return _regeneratorRuntime().wrap(function _callee2$(_context2) {
     while (1) {
-      switch (_context.prev = _context.next) {
+      switch (_context2.prev = _context2.next) {
         case 0:
-          removeItems = function _removeItems() {
-            var fullScreenBtn = document.querySelector('.ytp-fullscreen-button');
-            var topBtns = document.querySelector('.ytp-chrome-top-buttons');
-            var remoteBtn = document.querySelector('.ytp-remote-button');
-            var ytBtn = document.querySelector('.ytp-youtube-button');
-            var subBtn = document.querySelector('.ytp-subtitles-button');
-            var vol = document.querySelector('.ytp-volume-area');
-            [topBtns, fullScreenBtn, remoteBtn, ytBtn, subBtn, vol].forEach(function (el) {
-              return el === null || el === void 0 ? void 0 : el.remove();
+          _waitForElBySelector = function _waitForElBySelector3() {
+            _waitForElBySelector = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(selector) {
+              var timerId;
+              return _regeneratorRuntime().wrap(function _callee$(_context) {
+                while (1) {
+                  switch (_context.prev = _context.next) {
+                    case 0:
+                      timerId = null;
+                      new Promise(function (resolve, rej) {
+                        timerId = setInterval(function () {
+                          if (document.querySelector(selector)) {
+                            clearInterval(timerId);
+                            resolve();
+                          }
+                        }, 50);
+                      });
+
+                    case 2:
+                    case "end":
+                      return _context.stop();
+                  }
+                }
+              }, _callee);
+            }));
+            return _waitForElBySelector.apply(this, arguments);
+          };
+
+          waitForElBySelector = function _waitForElBySelector2(_x) {
+            return _waitForElBySelector.apply(this, arguments);
+          };
+
+          _context2.prev = 2;
+
+          setTime = function setTime(sec) {
+            var maxSec = player.getDuration();
+            var division = sec / (maxSec / 100);
+            UICustomProgressBar.style.width = "".concat(division, "%");
+            UICustomCurrentTime.textContent = convertSecond(sec);
+          };
+
+          convertSecond = function convertSecond(sec) {
+            sec = Math.trunc(sec);
+            var min = Math.floor(sec / 60);
+            var hour = Math.floor(min / 60);
+            return "".concat(hour ? hour % 24 + ':' : "").concat(('0' + min % 60).slice(-2), ":").concat(('0' + sec % 60).slice(-2));
+          };
+
+          goTo = function goTo(nextEl) {
+            resetSelect();
+            nextEl.classList.add(selectClass);
+          };
+
+          togglePlayStatus = function togglePlayStatus() {
+            var isTimer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+            openPanel(isTimer);
+
+            if (player.getPlayerState() == 1) {
+              player.pauseVideo();
+            } else {
+              player.playVideo();
+            }
+          };
+
+          changeSettingItem = function changeSettingItem() {
+            var mod = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+            var items = Array.from(document.querySelectorAll('.ytp-menuitem'));
+            var selectedIdx = items.findIndex(function (el) {
+              return el.classList.contains(selectClass);
+            });
+
+            if (~selectedIdx) {
+              var nextIdx = selectedIdx + mod;
+              var item = nextIdx < 0 ? items[items.length - 1] : nextIdx > items.length - 1 ? items[0] : items[nextIdx];
+              goTo(item);
+              item === null || item === void 0 ? void 0 : item.scrollIntoView({
+                block: 'center',
+                behavior: "smooth"
+              });
+            } else {
+              var _items$;
+
+              goTo(items[0]);
+              (_items$ = items[0]) === null || _items$ === void 0 ? void 0 : _items$.scrollIntoView({
+                block: 'center',
+                behavior: "smooth"
+              });
+            }
+          };
+
+          openPanel = function openPanel() {
+            window.clearTimeout(panelTimerID);
+            player.classList.remove('ytp-autohide'); // panelTimerID = setTimeout(closePanel, 4000);
+          };
+
+          resetSelect = function resetSelect() {
+            Array.from(document.querySelectorAll(".".concat(selectClass))).forEach(function (el) {
+              return el.classList.remove(selectClass);
             });
           };
 
-          log = function _log(str) {
-            var wrapper = document.getElementById('log-wrapper');
+          closePanel = function closePanel() {
+            iterationState = 'default';
+            window.clearTimeout(panelTimerID);
 
-            if (!wrapper) {
-              wrapper = document.createElement('div');
-              wrapper.id = 'log-wrapper';
-              wrapper.style.cssText = 'position:fixed;z-index:100;width: 300px; display:grid;gap: 10px; top: 0; left: 0';
-              document.body.appendChild(wrapper);
+            if (UISettingPopup.style.display !== 'none') {
+              UIYTSettingBtn.click();
             }
 
-            var div = document.createElement('div');
-            div.style.cssText = 'border: 1px solid red; padding: 2px 10px; color: red; background: #fff';
-            div.textContent = str;
-            wrapper.appendChild(div);
-            setTimeout(function () {
-              return div.remove();
-            }, 3000);
+            player.classList.add('ytp-autohide');
           };
 
-          iteration = function _iteration(key) {
+          wind = function wind() {
+            var sec = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+            player.pauseVideo();
+            windNextAdditionalTime = sec;
+            var nextTime = windNextAdditionalTime + (windCurrentTime === null ? isEnd ? player.getDuration() : player.getCurrentTime() : windCurrentTime);
+            windCurrentTime = Math.min(Math.max(0, nextTime), player.getDuration());
+            clearTimeout(windTimerId);
+            setTime(windCurrentTime);
+            isEnd = windCurrentTime >= player.getDuration();
+            windTimerId = setTimeout(function () {
+              player.seekTo(windCurrentTime, true);
+
+              if (!isEnd) {
+                player.playVideo();
+              }
+
+              windNextAdditionalTime = 0;
+              windCurrentTime = null;
+            }, 700);
+            openPanel();
+          };
+
+          iteration = function iteration(key) {
             var _document$querySelect;
 
-            // log(`iteration: ${key} = ${iterationState}`)
+            log("iteration: ".concat(key, " = ").concat(iterationState));
             console.log("iteration: ".concat(key, " = ").concat(iterationState));
 
             if (key === 'bottom') {
@@ -161,107 +264,42 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
             }
           };
 
-          wind = function _wind() {
-            var sec = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-            player.pauseVideo();
-            windNextAdditionalTime = sec;
-            var nextTime = windNextAdditionalTime + (windCurrentTime === null ? isEnd ? player.getDuration() : player.getCurrentTime() : windCurrentTime);
-            windCurrentTime = Math.min(Math.max(0, nextTime), player.getDuration());
-            clearTimeout(windTimerId);
-            setTime(windCurrentTime);
-            isEnd = windCurrentTime >= player.getDuration();
-            windTimerId = setTimeout(function () {
-              player.seekTo(windCurrentTime, true);
+          log = function log(str) {
+            var wrapper = document.getElementById('log-wrapper');
 
-              if (!isEnd) {
-                player.playVideo();
-              }
-
-              windNextAdditionalTime = 0;
-              windCurrentTime = null;
-            }, 700);
-            openPanel();
-          };
-
-          closePanel = function _closePanel() {
-            iterationState = 'default';
-            window.clearTimeout(panelTimerID);
-
-            if (UISettingPopup.style.display !== 'none') {
-              UIYTSettingBtn.click();
+            if (!wrapper) {
+              wrapper = document.createElement('div');
+              wrapper.id = 'log-wrapper';
+              wrapper.style.cssText = 'position:fixed;z-index:100;width: 300px; display:grid;gap: 10px; top: 0; left: 0';
+              document.body.appendChild(wrapper);
             }
 
-            player.classList.add('ytp-autohide');
+            var div = document.createElement('div');
+            div.style.cssText = 'border: 1px solid red; padding: 2px 10px; color: red; background: #fff';
+            div.textContent = str;
+            wrapper.appendChild(div);
+            setTimeout(function () {
+              return div.remove();
+            }, 3000);
           };
 
-          resetSelect = function _resetSelect() {
-            Array.from(document.querySelectorAll(".".concat(selectClass))).forEach(function (el) {
-              return el.classList.remove(selectClass);
+          removeItems = function removeItems() {
+            var fullScreenBtn = document.querySelector('.ytp-fullscreen-button');
+            var topBtns = document.querySelector('.ytp-chrome-top-buttons');
+            var remoteBtn = document.querySelector('.ytp-remote-button');
+            var ytBtn = document.querySelector('.ytp-youtube-button');
+            var subBtn = document.querySelector('.ytp-subtitles-button');
+            var vol = document.querySelector('.ytp-volume-area');
+            [topBtns, fullScreenBtn, remoteBtn, ytBtn, subBtn, vol].forEach(function (el) {
+              return el === null || el === void 0 ? void 0 : el.remove();
             });
-          };
-
-          openPanel = function _openPanel() {
-            window.clearTimeout(panelTimerID);
-            player.classList.remove('ytp-autohide'); // panelTimerID = setTimeout(closePanel, 4000);
-          };
-
-          changeSettingItem = function _changeSettingItem() {
-            var mod = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-            var items = Array.from(document.querySelectorAll('.ytp-menuitem'));
-            var selectedIdx = items.findIndex(function (el) {
-              return el.classList.contains(selectClass);
-            });
-
-            if (~selectedIdx) {
-              var nextIdx = selectedIdx + mod;
-              var item = nextIdx < 0 ? items[items.length - 1] : nextIdx > items.length - 1 ? items[0] : items[nextIdx];
-              goTo(item);
-              item === null || item === void 0 ? void 0 : item.scrollIntoView({
-                block: 'center',
-                behavior: "smooth"
-              });
-            } else {
-              var _items$;
-
-              goTo(items[0]);
-              (_items$ = items[0]) === null || _items$ === void 0 ? void 0 : _items$.scrollIntoView({
-                block: 'center',
-                behavior: "smooth"
-              });
-            }
-          };
-
-          togglePlayStatus = function _togglePlayStatus() {
-            var isTimer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-            openPanel(isTimer);
-
-            if (player.getPlayerState() == 1) {
-              player.pauseVideo();
-            } else {
-              player.playVideo();
-            }
-          };
-
-          goTo = function _goTo(nextEl) {
-            resetSelect();
-            nextEl.classList.add(selectClass);
-          };
-
-          convertSecond = function _convertSecond(sec) {
-            sec = Math.trunc(sec);
-            var min = Math.floor(sec / 60);
-            var hour = Math.floor(min / 60);
-            return "".concat(hour ? hour % 24 + ':' : "").concat(('0' + min % 60).slice(-2), ":").concat(('0' + sec % 60).slice(-2));
-          };
-
-          setTime = function _setTime(sec) {
-            var maxSec = player.getDuration();
-            var division = sec / (maxSec / 100);
-            UICustomProgressBar.style.width = "".concat(division, "%");
-            UICustomCurrentTime.textContent = convertSecond(sec);
           };
 
           alert('two  DOMContentLoaded !!!', navigator.userAgent);
+          _context2.next = 18;
+          return waitForElBySelector('#movie_player');
+
+        case 18:
           UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
           UIVideo = document.querySelector('video');
           UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -273,6 +311,7 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           UICurrentTime = document.querySelector('.ytp-time-current');
           UICustomCurrentTime = document.createElement('span');
           UICustomProgressBar = document.createElement('p');
+          UIPauseOverlay = document.querySelector('.ytp-pause-overlay-container');
           player = document.getElementById("movie_player");
           loopId = null;
           windNextAdditionalTime = 0;
@@ -281,7 +320,7 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           panelTimerID = null;
           isEnd = false;
           isEmbedErr = false;
-          alert('player:', player);
+          alert('player:', player === null || player === void 0 ? void 0 : player.toString());
           iterationState = 'default';
           selectClass = 'UISelect';
           styleEl = document.createElement('style');
@@ -290,7 +329,7 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           document.head.appendChild(styleEl);
           UIBottomControls.style.marginBottom = '5px';
           UILeftControls.style.padding = '0px 2px 2px';
-          document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
+          if (UIPauseOverlay) UIPauseOverlay.style.display = 'none';
           alert('ytp-pause-overlay-container');
           UICustomProgressBar.id = 'custom-progress-bar-wrapper';
           UICustomCurrentTime.id = 'custom-current-time';
@@ -378,11 +417,18 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           document.querySelector('video').click();
           removeItems();
           log('play');
+          _context2.next = 69;
+          break;
 
-        case 58:
+        case 66:
+          _context2.prev = 66;
+          _context2.t0 = _context2["catch"](2);
+          console.log(_context2.t0.toString());
+
+        case 69:
         case "end":
-          return _context.stop();
+          return _context2.stop();
       }
     }
-  }, _callee);
+  }, _callee2, null, [[2, 66]]);
 })));
