@@ -304,6 +304,7 @@ _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
           return waitForElBySelector('#movie_player');
 
         case 18:
+          alert('get #movie_player');
           UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
           UIVideo = document.querySelector('video');
           UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -421,18 +422,18 @@ _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
           document.querySelector('video').click();
           removeItems();
           alert('play');
-          _context2.next = 68;
+          _context2.next = 69;
           break;
 
-        case 65:
-          _context2.prev = 65;
+        case 66:
+          _context2.prev = 66;
           _context2.t0 = _context2["catch"](2);
           alert("err: ".concat(_context2.t0.toString()));
 
-        case 68:
+        case 69:
         case "end":
           return _context2.stop();
       }
     }
-  }, _callee2, null, [[2, 65]]);
+  }, _callee2, null, [[2, 66]]);
 }))();

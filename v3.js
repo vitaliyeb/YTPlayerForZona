@@ -17,7 +17,7 @@ alert('script work!!!');
        alert('two  DOMContentLoaded !!!', navigator.userAgent);
 
        await waitForElBySelector('#movie_player');
-
+       alert('get #movie_player');
        const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
        const UIVideo = document.querySelector('video');
        const UIBottomControls = document.querySelector('.ytp-chrome-bottom');
