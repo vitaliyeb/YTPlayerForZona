@@ -261,7 +261,7 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
             UICustomCurrentTime.textContent = convertSecond(sec);
           };
 
-          alert('DOMContentLoaded !!!', navigator.userAgent);
+          alert('two  DOMContentLoaded !!!', navigator.userAgent);
           UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
           UIVideo = document.querySelector('video');
           UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -281,7 +281,7 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           panelTimerID = null;
           isEnd = false;
           isEmbedErr = false;
-          console.log('player:', player);
+          alert('player:', player);
           iterationState = 'default';
           selectClass = 'UISelect';
           styleEl = document.createElement('style');
@@ -291,7 +291,7 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           UIBottomControls.style.marginBottom = '5px';
           UILeftControls.style.padding = '0px 2px 2px';
           document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
-          console.log('ytp-pause-overlay-container');
+          alert('ytp-pause-overlay-container');
           UICustomProgressBar.id = 'custom-progress-bar-wrapper';
           UICustomCurrentTime.id = 'custom-current-time';
           UIProgressBar.appendChild(UICustomProgressBar);
@@ -323,7 +323,7 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
             } // console.log('state: ', state);
 
           });
-          console.log('events init');
+          alert('events init');
           setInterval(function () {
             if (!isEmbedErr) {
               if (player.classList.contains('ytp-embed-error')) {

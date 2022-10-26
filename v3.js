@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', async function () {
-    alert('DOMContentLoaded !!!', navigator.userAgent);
+    alert('two  DOMContentLoaded !!!', navigator.userAgent);
     const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
     const UIVideo = document.querySelector('video');
     const UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', async function () {
     let isEnd = false;
     let isEmbedErr = false;
 
-    console.log('player:', player)
+    alert('player:', player);
 
     let iterationState = 'default';
     const selectClass = 'UISelect';
@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded', async function () {
     UIBottomControls.style.marginBottom = '5px';
     UILeftControls.style.padding = '0px 2px 2px';
     document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
-    console.log('ytp-pause-overlay-container');
+    alert('ytp-pause-overlay-container');
     UICustomProgressBar.id = 'custom-progress-bar-wrapper';
     UICustomCurrentTime.id = 'custom-current-time';
     UIProgressBar.appendChild(UICustomProgressBar);
@@ -72,7 +72,7 @@ window.addEventListener('DOMContentLoaded', async function () {
         // console.log('state: ', state);
     })
 
-    console.log('events init')
+    alert('events init')
     setInterval(() => {
         if (!isEmbedErr) {
             if (player.classList.contains('ytp-embed-error')) {
