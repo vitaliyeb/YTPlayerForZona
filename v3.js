@@ -1,5 +1,5 @@
-window.addEventListener('DOMContentLoaded', function () {
-    alert('DOMContentLoaded !!!');
+window.addEventListener('DOMContentLoaded', async function () {
+    alert('DOMContentLoaded !!!', navigator.userAgent);
     const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
     const UIVideo = document.querySelector('video');
     const UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -20,6 +20,8 @@ window.addEventListener('DOMContentLoaded', function () {
     let panelTimerID = null;
     let isEnd = false;
     let isEmbedErr = false;
+
+    console.log('player:', player)
 
     let iterationState = 'default';
     const selectClass = 'UISelect';
@@ -43,7 +45,7 @@ window.addEventListener('DOMContentLoaded', function () {
     UIBottomControls.style.marginBottom = '5px';
     UILeftControls.style.padding = '0px 2px 2px';
     document.querySelector('.ytp-pause-overlay-container').style.display = 'none';
-
+    console.log('ytp-pause-overlay-container');
     UICustomProgressBar.id = 'custom-progress-bar-wrapper';
     UICustomCurrentTime.id = 'custom-current-time';
     UIProgressBar.appendChild(UICustomProgressBar);
@@ -70,6 +72,7 @@ window.addEventListener('DOMContentLoaded', function () {
         // console.log('state: ', state);
     })
 
+    console.log('events init')
     setInterval(() => {
         if (!isEmbedErr) {
             if (player.classList.contains('ytp-embed-error')) {
@@ -293,21 +296,21 @@ window.addEventListener('DOMContentLoaded', function () {
         if (!e.isTrusted) return;
         e.preventDefault();
         e.stopPropagation();
-        iteration({
-            40: 'bottom',
-            39: 'right',
-            38: 'top',
-            37: 'left',
-            13: 'ok'
-        }[e.keyCode]);
-        // pla
         // iteration({
-        //     50: 'bottom',
-        //     54: 'right',
-        //     56: 'top',
-        //     52: 'left',
-        //     32: 'ok'
+        //     40: 'bottom',
+        //     39: 'right',
+        //     38: 'top',
+        //     37: 'left',
+        //     13: 'ok'
         // }[e.keyCode]);
+        // pla
+        iteration({
+            50: 'bottom',
+            54: 'right',
+            56: 'top',
+            52: 'left',
+            32: 'ok'
+        }[e.keyCode]);
         //pc
         // iteration({
         //     40: 'bottom',
