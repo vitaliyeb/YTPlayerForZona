@@ -1,3 +1,5 @@
+alert('script work!!!');
+
 window.addEventListener('DOMContentLoaded', async function () {
     async function waitForElBySelector(selector) {
         let timerId = null;

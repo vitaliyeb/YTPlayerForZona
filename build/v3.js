@@ -8,6 +8,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+alert('script work!!!');
 window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
   var waitForElBySelector, _waitForElBySelector, setTime, convertSecond, goTo, togglePlayStatus, changeSettingItem, openPanel, resetSelect, closePanel, wind, iteration, log, removeItems, UIBottomPanel, UIVideo, UIBottomControls, UILeftControls, UIYTSettingBtn, UIPlayBtn, UISettingPopup, UIProgressBar, UICurrentTime, UICustomCurrentTime, UICustomProgressBar, UIPauseOverlay, player, loopId, windNextAdditionalTime, windCurrentTime, windTimerId, panelTimerID, isEnd, isEmbedErr, iterationState, selectClass, styleEl;
 
