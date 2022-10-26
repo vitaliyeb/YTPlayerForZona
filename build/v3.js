@@ -297,10 +297,11 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
             });
           };
 
-          _context2.next = 17;
+          alert('two  DOMContentLoaded !!!', navigator.userAgent);
+          _context2.next = 18;
           return waitForElBySelector('#movie_player');
 
-        case 17:
+        case 18:
           UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
           UIVideo = document.querySelector('video');
           UIBottomControls = document.querySelector('.ytp-chrome-bottom');
@@ -320,8 +321,8 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           windTimerId = null;
           panelTimerID = null;
           isEnd = false;
-          isEmbedErr = false; // alert('player:', player?.toString());
-
+          isEmbedErr = false;
+          alert('player:', player === null || player === void 0 ? void 0 : player.toString());
           iterationState = 'default';
           selectClass = 'UISelect';
           styleEl = document.createElement('style');
@@ -362,8 +363,8 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
                 break;
             } // console.log('state: ', state);
 
-          }); // alert('events init')
-
+          });
+          alert('events init');
           setInterval(function () {
             if (!isEmbedErr) {
               if (player.classList.contains('ytp-embed-error')) {
@@ -417,19 +418,19 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           });
           document.querySelector('video').click();
           removeItems();
-          log('play');
-          _context2.next = 65;
+          alert('play');
+          _context2.next = 68;
           break;
 
-        case 62:
-          _context2.prev = 62;
+        case 65:
+          _context2.prev = 65;
           _context2.t0 = _context2["catch"](2);
           console.log(_context2.t0.toString());
 
-        case 65:
+        case 68:
         case "end":
           return _context2.stop();
       }
     }
-  }, _callee2, null, [[2, 62]]);
+  }, _callee2, null, [[2, 65]]);
 })));

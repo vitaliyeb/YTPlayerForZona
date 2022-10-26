@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', async function () {
     }
 
    try {
-       // alert('two  DOMContentLoaded !!!', navigator.userAgent);
+       alert('two  DOMContentLoaded !!!', navigator.userAgent);
 
        await waitForElBySelector('#movie_player');
 
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', async function () {
        let isEnd = false;
        let isEmbedErr = false;
 
-       // alert('player:', player?.toString());
+       alert('player:', player?.toString());
 
        let iterationState = 'default';
        const selectClass = 'UISelect';
@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded', async function () {
            // console.log('state: ', state);
        })
 
-       // alert('events init')
+       alert('events init')
        setInterval(() => {
            if (!isEmbedErr) {
                if (player.classList.contains('ytp-embed-error')) {
@@ -342,7 +342,7 @@ window.addEventListener('DOMContentLoaded', async function () {
 
        document.querySelector('video').click();
        removeItems();
-       log('play');
+       alert('play');
    } catch (e) {
        console.log(e.toString())
    }
