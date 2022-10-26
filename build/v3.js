@@ -23,16 +23,17 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
                   switch (_context.prev = _context.next) {
                     case 0:
                       timerId = null;
-                      new Promise(function (resolve, rej) {
+                      _context.next = 3;
+                      return new Promise(function (resolve, rej) {
                         timerId = setInterval(function () {
                           if (document.querySelector(selector)) {
                             clearInterval(timerId);
                             resolve();
                           }
-                        }, 50);
+                        }, 100);
                       });
 
-                    case 2:
+                    case 3:
                     case "end":
                       return _context.stop();
                   }
@@ -329,8 +330,8 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           document.head.appendChild(styleEl);
           UIBottomControls.style.marginBottom = '5px';
           UILeftControls.style.padding = '0px 2px 2px';
-          if (UIPauseOverlay) UIPauseOverlay.style.display = 'none';
-          alert('ytp-pause-overlay-container');
+          if (UIPauseOverlay) UIPauseOverlay.style.display = 'none'; // alert('ytp-pause-overlay-container');
+
           UICustomProgressBar.id = 'custom-progress-bar-wrapper';
           UICustomCurrentTime.id = 'custom-current-time';
           UIProgressBar.appendChild(UICustomProgressBar);
@@ -361,8 +362,8 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
                 break;
             } // console.log('state: ', state);
 
-          });
-          alert('events init');
+          }); // alert('events init')
+
           setInterval(function () {
             if (!isEmbedErr) {
               if (player.classList.contains('ytp-embed-error')) {
@@ -386,22 +387,22 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           window.addEventListener('keydown', function (e) {
             if (!e.isTrusted) return;
             e.preventDefault();
-            e.stopPropagation(); // iteration({
-            //     40: 'bottom',
-            //     39: 'right',
-            //     38: 'top',
-            //     37: 'left',
-            //     13: 'ok'
-            // }[e.keyCode]);
-            // pla
-
+            e.stopPropagation();
             iteration({
-              50: 'bottom',
-              54: 'right',
-              56: 'top',
-              52: 'left',
-              32: 'ok'
-            }[e.keyCode]); //pc
+              40: 'bottom',
+              39: 'right',
+              38: 'top',
+              37: 'left',
+              13: 'ok'
+            }[e.keyCode]); // pla
+            // iteration({
+            //     50: 'bottom',
+            //     54: 'right',
+            //     56: 'top',
+            //     52: 'left',
+            //     32: 'ok'
+            // }[e.keyCode]);
+            //pc
             // iteration({
             //     40: 'bottom',
             //     39: 'right',
@@ -417,18 +418,18 @@ window.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#_
           document.querySelector('video').click();
           removeItems();
           log('play');
-          _context2.next = 69;
+          _context2.next = 67;
           break;
 
-        case 66:
-          _context2.prev = 66;
+        case 64:
+          _context2.prev = 64;
           _context2.t0 = _context2["catch"](2);
           console.log(_context2.t0.toString());
 
-        case 69:
+        case 67:
         case "end":
           return _context2.stop();
       }
     }
-  }, _callee2, null, [[2, 66]]);
+  }, _callee2, null, [[2, 64]]);
 })));
