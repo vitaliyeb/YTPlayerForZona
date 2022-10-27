@@ -1,6 +1,6 @@
 "use strict";
 
-alert("\ntest:\n    window: ".concat(!!window, ",\n    document: ").concat(!!document, ",\n    body: ").concat(document.body, "\n"));
+alert("\ntest2:\n    window: ".concat(!!window, ",\n    document: ").concat(!!document, ",\n    body: ").concat(document.body, "\n"));
 
 (function () {
   function log(str) {
@@ -24,18 +24,28 @@ alert("\ntest:\n    window: ".concat(!!window, ",\n    document: ").concat(!!doc
   }
 
   function waitForElBySelector(selector, cb) {
-    var timerId = null;
     var sec = 0;
-    timerId = setInterval(function () {
-      if (document.querySelector(selector)) {
-        alert('find selector: ' + selector);
-        clearInterval(timerId);
-        cb();
-      } else {
-        log(++sec);
-      }
-    }, 100);
+
+    function f() {
+      setTimeout(function () {
+        var _document;
+
+        if ((_document = document) !== null && _document !== void 0 && _document.querySelector(selector)) {
+          alert('find selector: ' + selector);
+          cb();
+        } else {
+          f();
+          log(++sec);
+        }
+      }, 100);
+    }
+
+    f();
   }
+
+  setTimeout(function () {
+    alert('test setTimeout from f');
+  }, 100);
 
   function plrRun() {
     alert('get #movie_player');

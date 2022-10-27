@@ -1,5 +1,5 @@
 alert(`
-test:
+test2:
     window: ${!!window},
     document: ${!!document},
     body: ${document.body}
@@ -23,19 +23,25 @@ test:
     }
 
     function waitForElBySelector(selector, cb) {
-        let timerId = null;
         let sec = 0;
 
-        timerId = setInterval(() => {
-            if (document.querySelector(selector)) {
-                alert('find selector: ' + selector);
-                clearInterval(timerId);
-                cb();
-            } else {
-                log(++sec);
-            }
-        }, 100);
+        function f() {
+            setTimeout(function () {
+                if (document?.querySelector(selector)) {
+                    alert('find selector: ' + selector);
+                    cb();
+                } else {
+                    f();
+                    log(++sec);
+                }
+            }, 100)
+        }
+        f();
     }
+
+    setTimeout(function () {
+        alert('test setTimeout from f')
+    }, 100)
 
     function plrRun() {
         alert('get #movie_player');
