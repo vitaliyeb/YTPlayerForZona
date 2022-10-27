@@ -6,6 +6,15 @@ function test() {
   alert('testSetTimeout');
 }
 
+window.checkElements = function () {
+  alert('check');
+  return !!document.querySelector('#movie_player');
+};
+
+window.runPlayer = function () {
+  alert('run');
+};
+
 window.setTimeout(test, 100); // (function () {
 //     return;
 //     function log(str) {
