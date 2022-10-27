@@ -39,6 +39,7 @@ window.runPlayer = function () {
         let windCurrentTime = null;
         let windTimerId = null;
         let panelTimerID = null;
+        let settingTimerId = null;
         let isEnd = false;
         let isEmbedErr = false;
 
@@ -197,6 +198,7 @@ window.runPlayer = function () {
             if (key === 'bottom') {
                 openPanel()
             }
+            clearTimeout(settingTimerId);
             switch (iterationState) {
                 case "default":
                     switch (key) {
@@ -242,6 +244,10 @@ window.runPlayer = function () {
                             resetSelect();
                             break;
                         case 'ok':
+                            settingTimerId = setTimeout(function () {
+                                iterationState = 'default';
+                                closePanel();
+                            }, 4000);
                             openPanel();
                             iterationState = 'open-setting';
                             UIYTSettingBtn.click();
@@ -257,6 +263,10 @@ window.runPlayer = function () {
                     }
                     break;
                 case 'open-setting':
+                    settingTimerId = setTimeout(function () {
+                        iterationState = 'default';
+                        closePanel();
+                    }, 4000);
                     switch (key) {
                         case 'ok':
                             openPanel();
@@ -264,7 +274,7 @@ window.runPlayer = function () {
                             document.querySelector(`.ytp-menuitem.${selectClass}`)?.click();
                             resetSelect();
                             if (isQuality) {
-                                iterationState = 'default'
+                                iterationState = 'default';
                                 closePanel();
                             } else {
                                 setTimeout(() => changeSettingItem(0), 300);

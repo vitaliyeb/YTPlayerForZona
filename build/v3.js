@@ -135,6 +135,8 @@ window.runPlayer = function () {
         openPanel();
       }
 
+      clearTimeout(settingTimerId);
+
       switch (iterationState) {
         case "default":
           switch (key) {
@@ -190,6 +192,10 @@ window.runPlayer = function () {
               break;
 
             case 'ok':
+              settingTimerId = setTimeout(function () {
+                iterationState = 'default';
+                closePanel();
+              }, 4000);
               openPanel();
               iterationState = 'open-setting';
               UIYTSettingBtn.click();
@@ -208,6 +214,11 @@ window.runPlayer = function () {
           break;
 
         case 'open-setting':
+          settingTimerId = setTimeout(function () {
+            iterationState = 'default';
+            closePanel();
+          }, 4000);
+
           switch (key) {
             case 'ok':
               openPanel();
@@ -271,6 +282,7 @@ window.runPlayer = function () {
     var windCurrentTime = null;
     var windTimerId = null;
     var panelTimerID = null;
+    var settingTimerId = null;
     var isEnd = false;
     var isEmbedErr = false;
     var iterationState = 'default';
