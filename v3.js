@@ -1,8 +1,13 @@
-alert('script work!!!');
+alert(`
+test:
+    window: ${!!window},
+    document: ${!!document},
+    body: ${document.body}
+`);
 
 (function () {
     function log(str) {
-        return;
+        // return;
         let wrapper = document.getElementById('log-wrapper');
         if (!wrapper) {
             wrapper = document.createElement('div');
@@ -19,11 +24,15 @@ alert('script work!!!');
 
     function waitForElBySelector(selector, cb) {
         let timerId = null;
+        let sec = 0;
 
         timerId = setInterval(() => {
             if (document.querySelector(selector)) {
+                alert('find selector: ' + selector);
                 clearInterval(timerId);
                 cb();
+            } else {
+                log(++sec);
             }
         }, 100);
     }
@@ -344,6 +353,7 @@ alert('script work!!!');
     }
 
     try {
+        alert('start waitFor');
         waitForElBySelector('#movie_player', plrRun);
     } catch (e) {
         alert(`err: ${e.toString()}`)

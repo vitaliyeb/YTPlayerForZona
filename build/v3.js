@@ -1,10 +1,10 @@
 "use strict";
 
-alert('script work!!!');
+alert("\ntest:\n    window: ".concat(!!window, ",\n    document: ").concat(!!document, ",\n    body: ").concat(document.body, "\n"));
 
 (function () {
   function log(str) {
-    return;
+    // return;
     var wrapper = document.getElementById('log-wrapper');
 
     if (!wrapper) {
@@ -25,10 +25,14 @@ alert('script work!!!');
 
   function waitForElBySelector(selector, cb) {
     var timerId = null;
+    var sec = 0;
     timerId = setInterval(function () {
       if (document.querySelector(selector)) {
+        alert('find selector: ' + selector);
         clearInterval(timerId);
         cb();
+      } else {
+        log(++sec);
       }
     }, 100);
   }
@@ -385,6 +389,7 @@ alert('script work!!!');
   }
 
   try {
+    alert('start waitFor');
     waitForElBySelector('#movie_player', plrRun);
   } catch (e) {
     alert("err: ".concat(e.toString()));
