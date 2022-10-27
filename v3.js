@@ -5,7 +5,7 @@ window.checkElements = function () {
 window.runPlayer = function () {
     try {
         function log(str) {
-            // return
+            return;
             let wrapper = document.getElementById('log-wrapper');
             if (!wrapper) {
                 wrapper = document.createElement('div');
@@ -41,8 +41,6 @@ window.runPlayer = function () {
         let panelTimerID = null;
         let isEnd = false;
         let isEmbedErr = false;
-
-        alert('player:', player?.toString());
 
         let iterationState = 'default';
         const selectClass = 'UISelect';
@@ -328,7 +326,6 @@ window.runPlayer = function () {
 
         document.querySelector('video').click();
         removeItems();
-        alert('play');
 
     } catch (e) {
         alert(`err: ${e.toString()}`)

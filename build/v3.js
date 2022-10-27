@@ -7,7 +7,7 @@ window.checkElements = function () {
 window.runPlayer = function () {
   try {
     var log = function log(str) {
-      // return
+      return;
       var wrapper = document.getElementById('log-wrapper');
 
       if (!wrapper) {
@@ -273,7 +273,6 @@ window.runPlayer = function () {
     var panelTimerID = null;
     var isEnd = false;
     var isEmbedErr = false;
-    alert('player:', player === null || player === void 0 ? void 0 : player.toString());
     var iterationState = 'default';
     var selectClass = 'UISelect';
     var styleEl = document.createElement('style');
@@ -368,7 +367,6 @@ window.runPlayer = function () {
     });
     document.querySelector('video').click();
     removeItems();
-    alert('play');
   } catch (e) {
     alert("err: ".concat(e.toString()));
   }
