@@ -1,20 +1,12 @@
 "use strict";
 
-alert("\ntest2:\n    window: ".concat(!!window, ",\n    document: ").concat(!!document, ",\n    body: ").concat(document.body, "\n"));
-
-function test() {
-  alert('testSetTimeout');
-}
-
 window.checkElements = function () {
-  return "Hello, Kirill";
+  return Boolean(document.querySelector('#movie_player'));
 };
 
 window.runPlayer = function () {
   alert('run');
-};
-
-window.setTimeout(test, 100); // (function () {
+}; // (function () {
 //     return;
 //     function log(str) {
 //         // return;

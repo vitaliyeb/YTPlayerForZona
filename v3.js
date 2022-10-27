@@ -1,23 +1,10 @@
-alert(`
-test2:
-    window: ${!!window},
-    document: ${!!document},
-    body: ${document.body}
-`);
-
-function test() {
-    alert('testSetTimeout');
-}
-
 window.checkElements = function () {
-    return "Hello, Kirill";
+    return Boolean(document.querySelector('#movie_player'));
 }
 
 window.runPlayer = function () {
     alert('run');
 }
-
-window.setTimeout(test, 100)
 
 // (function () {
 //     return;
