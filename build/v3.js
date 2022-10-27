@@ -1,9 +1,12 @@
 "use strict";
 
 alert("\ntest2:\n    window: ".concat(!!window, ",\n    document: ").concat(!!document, ",\n    body: ").concat(document.body, "\n"));
-setTimeout(function () {
+
+function test() {
   alert('testSetTimeout');
-}, 100); // (function () {
+}
+
+window.setTimeout(test, 100); // (function () {
 //     return;
 //     function log(str) {
 //         // return;

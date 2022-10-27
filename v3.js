@@ -5,10 +5,11 @@ test2:
     body: ${document.body}
 `);
 
-
-setTimeout(function () {
+function test() {
     alert('testSetTimeout');
-}, 100)
+}
+
+window.setTimeout(test, 100)
 
 // (function () {
 //     return;
