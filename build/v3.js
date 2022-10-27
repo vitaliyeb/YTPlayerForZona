@@ -7,7 +7,7 @@ function test() {
 }
 
 window.checkElements = function () {
-  return Boolean(document.querySelector('#movie_player'));
+  return "Hello, Kirill";
 };
 
 window.runPlayer = function () {
