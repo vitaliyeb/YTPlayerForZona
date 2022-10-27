@@ -10,7 +10,7 @@ function test() {
 }
 
 window.checkElements = function () {
-    return !!document.querySelector('#movie_player');
+    return Boolean(document.querySelector('#movie_player'));
 }
 
 window.runPlayer = function () {
