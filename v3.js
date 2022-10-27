@@ -10,7 +10,6 @@ function test() {
 }
 
 window.checkElements = function () {
-    alert('check');
     return !!document.querySelector('#movie_player');
 }
 
