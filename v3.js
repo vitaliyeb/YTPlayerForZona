@@ -51,6 +51,8 @@ window.runPlayer = function () {
         .ytp-progress-bar > div {opacity: 0 !important;}
         .ytp-time-current { display: none;}
         #custom-current-time {color: #ddd;}
+        .ytp-tooltip {opacity: 0 !important;}
+        .ytp-settings-menu .ytp-menuitem[role="menuitemcheckbox"] + .ytp-menuitem {display: none !important;}
         .ytp-pause-overlay-container {display: none !important;}
         .ytp-iv-player-content {display: none !important;}
         .ytp-chrome-bottom {height: 50px !important; margin-bottom: 10px !important;}
@@ -134,7 +136,8 @@ window.runPlayer = function () {
         }
 
         function changeSettingItem(mod = 0) {
-            const items = Array.from(document.querySelectorAll('.ytp-menuitem'));
+            const items = Array.from(document.querySelectorAll('.ytp-menuitem'))
+                .filter(el => getComputedStyle(el).display !== 'none')
             const selectedIdx = items.findIndex(el => el.classList.contains(selectClass));
             if (~selectedIdx) {
                 const nextIdx = selectedIdx + mod;
