@@ -401,5 +401,3 @@ window.runPlayer = function () {
     alert("err: ".concat(e.toString()));
   }
 };
-
-runPlayer();

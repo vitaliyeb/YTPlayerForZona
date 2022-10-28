@@ -358,5 +358,3 @@ window.runPlayer = function () {
         alert(`err: ${e.toString()}`)
     }
 }
-
-runPlayer();
