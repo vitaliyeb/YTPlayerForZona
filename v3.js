@@ -20,8 +20,6 @@ window.runPlayer = function () {
             setTimeout(() => div.remove(), 3000);
         }
 
-        const UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
-        const UIVideo = document.querySelector('video');
         const UIBottomControls = document.querySelector('.ytp-chrome-bottom');
         const UILeftControls = document.querySelector('.ytp-left-controls');
         const UIYTSettingBtn = document.querySelector('.ytp-settings-button');
@@ -31,7 +29,6 @@ window.runPlayer = function () {
         const UICurrentTime = document.querySelector('.ytp-time-current');
         const UICustomCurrentTime = document.createElement('span');
         const UICustomProgressBar = document.createElement('p');
-        const UIPauseOverlay = document.querySelector('.ytp-pause-overlay-container');
 
         const player = document.getElementById("movie_player");
         let loopId = null;
@@ -54,6 +51,8 @@ window.runPlayer = function () {
         .ytp-progress-bar > div {opacity: 0 !important;}
         .ytp-time-current { display: none;}
         #custom-current-time {color: #ddd;}
+        .ytp-pause-overlay-container {display: none !important;}
+        .ytp-iv-player-content {display: none !important;}
         .ytp-chrome-bottom {height: 50px !important; margin-bottom: 10px !important;}
         .ytp-left-controls {padding: 2px !important; height: 35px !important; overflow: visible !important;}
         .ytp-progress-bar-container {bottom: auto !important; top: -10px !important;}
@@ -64,8 +63,6 @@ window.runPlayer = function () {
 
         UIBottomControls.style.marginBottom = '5px';
         UILeftControls.style.padding = '0px 2px 2px';
-        if (UIPauseOverlay) UIPauseOverlay.style.display = 'none';
-        // alert('ytp-pause-overlay-container');
         UICustomProgressBar.id = 'custom-progress-bar-wrapper';
         UICustomCurrentTime.id = 'custom-current-time';
         UIProgressBar.appendChild(UICustomProgressBar);
@@ -268,6 +265,7 @@ window.runPlayer = function () {
                         closePanel();
                     }, 4000);
                     switch (key) {
+                        case 'right':
                         case 'ok':
                             openPanel();
                             const isQuality = !!document.querySelector('.ytp-quality-menu');
@@ -287,6 +285,22 @@ window.runPlayer = function () {
                         case 'bottom':
                             openPanel();
                             changeSettingItem(1);
+                            break;
+                        case 'left':
+                            const UIBackBtn = document.querySelector('.ytp-button.ytp-panel-back-button');
+                            if (UIBackBtn) {
+                                UIBackBtn.click();
+                                setTimeout(() => {
+                                    changeSettingItem(0);
+                                }, 300)
+                            } else {
+                                if (UISettingPopup.style.display !== 'none') {
+                                    UIYTSettingBtn.click();
+                                }
+                                openPanel();
+                                iterationState = 'setting-button-selected';
+                                goTo(UIYTSettingBtn);
+                            }
                             break;
                     }
                     break;
@@ -341,3 +355,5 @@ window.runPlayer = function () {
         alert(`err: ${e.toString()}`)
     }
 }
+
+runPlayer();

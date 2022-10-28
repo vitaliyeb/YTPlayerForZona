@@ -220,6 +220,7 @@ window.runPlayer = function () {
           }, 4000);
 
           switch (key) {
+            case 'right':
             case 'ok':
               openPanel();
               var isQuality = !!document.querySelector('.ytp-quality-menu');
@@ -246,6 +247,26 @@ window.runPlayer = function () {
               openPanel();
               changeSettingItem(1);
               break;
+
+            case 'left':
+              var UIBackBtn = document.querySelector('.ytp-button.ytp-panel-back-button');
+
+              if (UIBackBtn) {
+                UIBackBtn.click();
+                setTimeout(function () {
+                  changeSettingItem(0);
+                }, 300);
+              } else {
+                if (UISettingPopup.style.display !== 'none') {
+                  UIYTSettingBtn.click();
+                }
+
+                openPanel();
+                iterationState = 'setting-button-selected';
+                goTo(UIYTSettingBtn);
+              }
+
+              break;
           }
 
           break;
@@ -264,8 +285,6 @@ window.runPlayer = function () {
       });
     };
 
-    var UIBottomPanel = document.querySelector('.ytp-chrome-bottom');
-    var UIVideo = document.querySelector('video');
     var UIBottomControls = document.querySelector('.ytp-chrome-bottom');
     var UILeftControls = document.querySelector('.ytp-left-controls');
     var UIYTSettingBtn = document.querySelector('.ytp-settings-button');
@@ -275,7 +294,6 @@ window.runPlayer = function () {
     var UICurrentTime = document.querySelector('.ytp-time-current');
     var UICustomCurrentTime = document.createElement('span');
     var UICustomProgressBar = document.createElement('p');
-    var UIPauseOverlay = document.querySelector('.ytp-pause-overlay-container');
     var player = document.getElementById("movie_player");
     var loopId = null;
     var windNextAdditionalTime = 0;
@@ -289,12 +307,10 @@ window.runPlayer = function () {
     var selectClass = 'UISelect';
     var styleEl = document.createElement('style');
     styleEl.type = 'text/css';
-    styleEl.innerHTML = "\n        .".concat(selectClass, " { outline: solid !important; }\n        .ytp-panel-header- {display: none;}\n        .ytp-progress-bar > div {opacity: 0 !important;}\n        .ytp-time-current { display: none;}\n        #custom-current-time {color: #ddd;}\n        .ytp-chrome-bottom {height: 50px !important; margin-bottom: 10px !important;}\n        .ytp-left-controls {padding: 2px !important; height: 35px !important; overflow: visible !important;}\n        .ytp-progress-bar-container {bottom: auto !important; top: -10px !important;}\n        .ytp-progress-bar-container, .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important; overflow: hidden;}\n        #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}\n        ");
+    styleEl.innerHTML = "\n        .".concat(selectClass, " { outline: solid !important; }\n        .ytp-panel-header- {display: none;}\n        .ytp-progress-bar > div {opacity: 0 !important;}\n        .ytp-time-current { display: none;}\n        #custom-current-time {color: #ddd;}\n        .ytp-pause-overlay-container {display: none !important;}\n        .ytp-iv-player-content {display: none !important;}\n        .ytp-chrome-bottom {height: 50px !important; margin-bottom: 10px !important;}\n        .ytp-left-controls {padding: 2px !important; height: 35px !important; overflow: visible !important;}\n        .ytp-progress-bar-container {bottom: auto !important; top: -10px !important;}\n        .ytp-progress-bar-container, .ytp-progress-bar {background-color: rgba(255,255,255,.2); max-height: 5px !important; overflow: hidden;}\n        #custom-progress-bar-wrapper {position: absolute; left: 0; top: 0; height: 100%; margin: 0; background-color: red;}\n        ");
     document.head.appendChild(styleEl);
     UIBottomControls.style.marginBottom = '5px';
     UILeftControls.style.padding = '0px 2px 2px';
-    if (UIPauseOverlay) UIPauseOverlay.style.display = 'none'; // alert('ytp-pause-overlay-container');
-
     UICustomProgressBar.id = 'custom-progress-bar-wrapper';
     UICustomCurrentTime.id = 'custom-current-time';
     UIProgressBar.appendChild(UICustomProgressBar);
@@ -383,3 +399,5 @@ window.runPlayer = function () {
     alert("err: ".concat(e.toString()));
   }
 };
+
+runPlayer();
