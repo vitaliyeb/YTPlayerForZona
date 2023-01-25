@@ -5,7 +5,7 @@ window.checkElements = function () {
 window.runPlayer = function () {
     try {
         function log(str) {
-            return;
+            // return;
             let wrapper = document.getElementById('log-wrapper');
             if (!wrapper) {
                 wrapper = document.createElement('div');
