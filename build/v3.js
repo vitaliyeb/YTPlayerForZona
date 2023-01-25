@@ -7,7 +7,7 @@ window.checkElements = function () {
 window.runPlayer = function () {
   try {
     var log = function log(str) {
-      // return;
+      return;
       var wrapper = document.getElementById('log-wrapper');
 
       if (!wrapper) {
@@ -377,43 +377,40 @@ window.runPlayer = function () {
         player.playVideo();
       } else if (e.key === "MediaPlayPause") {
         togglePlayStatus();
-      } // iteration({
-      //     40: 'bottom',
-      //     39: 'right',
-      //     38: 'top',
-      //     37: 'left',
-      //     13: 'ok',
-      //     228: 'rewind-right',
-      //     227: 'rewind-left'
-      // }[e.keyCode]);
-      // pla
-
-
-      iteration({
-        50: 'bottom',
-        54: 'right',
-        56: 'top',
-        52: 'left',
-        32: 'ok'
-      }[e.keyCode]); //pc
+      }
 
       iteration({
         40: 'bottom',
         39: 'right',
         38: 'top',
         37: 'left',
-        32: 'ok'
-      }[e.keyCode]);
+        13: 'ok',
+        228: 'rewind-right',
+        227: 'rewind-left'
+      }[e.keyCode]); // pla
+      // iteration({
+      //     50: 'bottom',
+      //     54: 'right',
+      //     56: 'top',
+      //     52: 'left',
+      //     32: 'ok'
+      // }[e.keyCode]);
+      //pc
+      // iteration({
+      //     40: 'bottom',
+      //     39: 'right',
+      //     38: 'top',
+      //     37: 'left',
+      //     32: 'ok'
+      // }[e.keyCode]);
+
       log("".concat(e.key, ": ").concat(e.keyCode, ", ").concat(iterationState));
     }, {
       capture: true
     });
-    alert('start2');
     document.querySelector('video').click();
     removeItems();
   } catch (e) {
     alert("err: ".concat(e.toString()));
   }
-
-  alert('start');
 };

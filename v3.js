@@ -5,7 +5,7 @@ window.checkElements = function () {
 window.runPlayer = function () {
     try {
         function log(str) {
-            // return;
+            return;
             let wrapper = document.getElementById('log-wrapper');
             if (!wrapper) {
                 wrapper = document.createElement('div');
@@ -336,39 +336,37 @@ window.runPlayer = function () {
                 togglePlayStatus();
             }
 
-            // iteration({
-            //     40: 'bottom',
-            //     39: 'right',
-            //     38: 'top',
-            //     37: 'left',
-            //     13: 'ok',
-            //     228: 'rewind-right',
-            //     227: 'rewind-left'
-            // }[e.keyCode]);
-            // pla
-            iteration({
-                50: 'bottom',
-                54: 'right',
-                56: 'top',
-                52: 'left',
-                32: 'ok'
-            }[e.keyCode]);
-            //pc
             iteration({
                 40: 'bottom',
                 39: 'right',
                 38: 'top',
                 37: 'left',
-                32: 'ok'
+                13: 'ok',
+                228: 'rewind-right',
+                227: 'rewind-left'
             }[e.keyCode]);
+            // pla
+            // iteration({
+            //     50: 'bottom',
+            //     54: 'right',
+            //     56: 'top',
+            //     52: 'left',
+            //     32: 'ok'
+            // }[e.keyCode]);
+            //pc
+            // iteration({
+            //     40: 'bottom',
+            //     39: 'right',
+            //     38: 'top',
+            //     37: 'left',
+            //     32: 'ok'
+            // }[e.keyCode]);
             log(`${e.key}: ${e.keyCode}, ${iterationState}`);
         }, {capture: true})
-        alert('start2');
         document.querySelector('video').click();
         removeItems();
 
     } catch (e) {
         alert(`err: ${e.toString()}`)
     }
-    alert('start')
 }
