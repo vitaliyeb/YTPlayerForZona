@@ -396,21 +396,24 @@ window.runPlayer = function () {
         52: 'left',
         32: 'ok'
       }[e.keyCode]); //pc
-      // iteration({
-      //     40: 'bottom',
-      //     39: 'right',
-      //     38: 'top',
-      //     37: 'left',
-      //     32: 'ok'
-      // }[e.keyCode]);
 
+      iteration({
+        40: 'bottom',
+        39: 'right',
+        38: 'top',
+        37: 'left',
+        32: 'ok'
+      }[e.keyCode]);
       log("".concat(e.key, ": ").concat(e.keyCode, ", ").concat(iterationState));
     }, {
       capture: true
     });
+    alert('start2');
     document.querySelector('video').click();
     removeItems();
   } catch (e) {
     alert("err: ".concat(e.toString()));
   }
+
+  alert('start');
 };
