@@ -203,9 +203,11 @@ window.runPlayer = function () {
                 case "default":
                     switch (key) {
                         case 'right':
+                        case 'rewind-right':
                             wind(windNextAdditionalTime <= 0 ? 15 : Math.min(windNextAdditionalTime * 2, 120));
                             break;
                         case 'left':
+                        case 'rewind-left':
                             wind(windNextAdditionalTime >= 0 ? -15 : Math.max(-Math.abs(windNextAdditionalTime * 2), -120));
                             break;
                         case 'ok':
@@ -325,21 +327,32 @@ window.runPlayer = function () {
             if (!e.isTrusted) return;
             e.preventDefault();
             e.stopPropagation();
-            iteration({
-                40: 'bottom',
-                39: 'right',
-                38: 'top',
-                37: 'left',
-                13: 'ok'
-            }[e.keyCode]);
-            // pla
+
+            if (e.key === "MediaPause") {
+                player.pauseVideo();
+            } else if (e.key === "MediaPlay") {
+                player.playVideo();
+            } else if (e.key === "MediaPlayPause") {
+                togglePlayStatus();
+            }
+
             // iteration({
-            //     50: 'bottom',
-            //     54: 'right',
-            //     56: 'top',
-            //     52: 'left',
-            //     32: 'ok'
+            //     40: 'bottom',
+            //     39: 'right',
+            //     38: 'top',
+            //     37: 'left',
+            //     13: 'ok',
+            //     228: 'rewind-right',
+            //     227: 'rewind-left'
             // }[e.keyCode]);
+            // pla
+            iteration({
+                50: 'bottom',
+                54: 'right',
+                56: 'top',
+                52: 'left',
+                32: 'ok'
+            }[e.keyCode]);
             //pc
             // iteration({
             //     40: 'bottom',
